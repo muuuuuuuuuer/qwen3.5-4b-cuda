@@ -1,0 +1,7 @@
+benchmark_name,sub_type,proj_name,submodule_name,M,N,K,latency_ms,bandwidth_GBs,total_bytes_MB
+FFN_gate_proj,FFN,gate_proj,model.language_model.layers.0.mlp.gate_proj,1,9216,2560,0.09576448440551757,492.97474207755437,47.209472
+FFN_down_proj,FFN,down_proj,model.language_model.layers.0.mlp.down_proj,1,2560,9216,0.09166751861572266,515.0076353425227,47.209472
+FullAttn_q_proj,FullAttn,q_proj,model.language_model.layers.3.self_attn.q_proj,1,8192,2560,0.08625151634216309,486.5368839838715,41.964544
+FullAttn_k_proj,FullAttn,k_proj,model.language_model.layers.3.self_attn.k_proj,1,1024,2560,0.012083200216293334,434.4915176461849,5.250048
+DeltaNet_in_proj_qkv,DeltaNet_Attn,in_proj_qkv,model.language_model.layers.0.linear_attn.in_proj_qkv,1,8192,2560,0.08111104011535644,517.3715432611622,41.964544
+DeltaNet_in_proj_z,DeltaNet_Attn,in_proj_z,model.language_model.layers.0.linear_attn.in_proj_z,1,4096,2560,0.04048895835876465,518.2853017372676,20.984832

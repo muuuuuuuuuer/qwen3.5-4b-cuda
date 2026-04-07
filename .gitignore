@@ -1,0 +1,13 @@
+.venv/
+.vscode/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+*:Zone.Identifier
+quantized_weights.pt
+*.safetensors
+*.gguf
+*.pt
+*.pth
+*.bin
+*.ckpt

@@ -1,0 +1,10 @@
+record_type,scenario,input_tokens,prefill_latency_s,decode_latency_s_per_token,peak_vram_mib,M,N,K,fp16_latency_ms
+end_to_end,short_128,133,0.23657844489998753,0.042063655562500205,8739.13037109375,,,,
+end_to_end,mid_512,527,0.2793902198999604,0.04234676384375149,8826.07470703125,,,,
+end_to_end,long_2048,2060,0.6022108355000227,0.04485894952187479,9182.88134765625,,,,
+single_layer,FFN_gate_proj,,,,,1,9216,2560,0.09576448440551757
+single_layer,FFN_down_proj,,,,,1,2560,9216,0.09166751861572266
+single_layer,FullAttn_q_proj,,,,,1,8192,2560,0.08625151634216309
+single_layer,FullAttn_k_proj,,,,,1,1024,2560,0.012083200216293334
+single_layer,DeltaNet_in_proj_qkv,,,,,1,8192,2560,0.08111104011535644
+single_layer,DeltaNet_in_proj_z,,,,,1,4096,2560,0.04048895835876465
