@@ -1,0 +1,10 @@
+Qwen3_5GatedDeltaNet(
+  (act): SiLUActivation()
+  (conv1d): Conv1d(8192, 8192, kernel_size=(4,), stride=(1,), padding=(3,), groups=8192, bias=False)
+  (norm): FusedRMSNormGated(128, eps=1e-06, activation=silu)
+  (out_proj): Linear(in_features=4096, out_features=2560, bias=False)
+  (in_proj_qkv): Linear(in_features=2560, out_features=8192, bias=False)
+  (in_proj_z): Linear(in_features=2560, out_features=4096, bias=False)
+  (in_proj_b): Linear(in_features=2560, out_features=32, bias=False)
+  (in_proj_a): Linear(in_features=2560, out_features=32, bias=False)
+)

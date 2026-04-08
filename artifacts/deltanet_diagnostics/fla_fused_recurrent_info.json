@@ -1,0 +1,5 @@
+{
+  "module_file": "/home/haozhong/vllm-env/lib/python3.12/site-packages/fla/ops/gated_delta_rule/fused_recurrent.py",
+  "saved_copy": "/home/haozhong/ECE9483/artifacts/deltanet_diagnostics/fla_fused_recurrent_source.py",
+  "line_count": 382
+}

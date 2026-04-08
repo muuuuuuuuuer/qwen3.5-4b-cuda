@@ -1,0 +1,1063 @@
+{
+  "prompt": "Explain what DeltaNet decode latency means in one short paragraph.",
+  "use_chat_template": true,
+  "gen_tokens": 16,
+  "warmup_cycles": 2,
+  "runs": 6,
+  "reuse_model": true,
+  "warmup_mode_orders": [
+    [
+      "fla",
+      "triton_base",
+      "triton_fused"
+    ],
+    [
+      "triton_base",
+      "triton_fused",
+      "fla"
+    ]
+  ],
+  "measured_mode_orders": [
+    [
+      "fla",
+      "triton_base",
+      "triton_fused"
+    ],
+    [
+      "triton_base",
+      "triton_fused",
+      "fla"
+    ],
+    [
+      "triton_fused",
+      "fla",
+      "triton_base"
+    ],
+    [
+      "fla",
+      "triton_base",
+      "triton_fused"
+    ],
+    [
+      "triton_base",
+      "triton_fused",
+      "fla"
+    ],
+    [
+      "triton_fused",
+      "fla",
+      "triton_base"
+    ]
+  ],
+  "measured_position_counts": {
+    "fla": {
+      "0": 2,
+      "2": 2,
+      "1": 2
+    },
+    "triton_base": {
+      "1": 2,
+      "0": 2,
+      "2": 2
+    },
+    "triton_fused": {
+      "2": 2,
+      "1": 2,
+      "0": 2
+    }
+  },
+  "reference_mode": "fla",
+  "modes": {
+    "fla": {
+      "mode": "fla",
+      "runtime_description": {
+        "forward_impl": "forward",
+        "causal_conv1d_update_impl": "causal_conv1d_update",
+        "chunk_impl": "chunk_gated_delta_rule",
+        "recurrent_impl": "fused_recurrent_gated_delta_rule"
+      },
+      "measured_runs": 6,
+      "ttft_summary": {
+        "count": 6,
+        "min_ms": 49.856699,
+        "max_ms": 57.51183,
+        "mean_ms": 53.689248,
+        "p50_ms": 53.857474,
+        "p90_ms": 57.51183
+      },
+      "decode_summary": {
+        "count": 90,
+        "min_ms": 32.641844,
+        "max_ms": 59.047636,
+        "mean_ms": 37.078961,
+        "p50_ms": 34.956608,
+        "p90_ms": 43.078912
+      },
+      "end_to_end_summary": {
+        "count": 6,
+        "min_ms": 597.631124,
+        "max_ms": 625.903654,
+        "mean_ms": 609.873657,
+        "p50_ms": 607.92743,
+        "p90_ms": 625.903654
+      },
+      "per_step_mean_decode_ms": [
+        38.081282,
+        37.334872,
+        36.595641,
+        37.143333,
+        35.966913,
+        36.039621,
+        37.145382,
+        37.888234,
+        36.590219,
+        38.190327,
+        35.750503,
+        35.319213,
+        37.529387,
+        39.472151,
+        37.137331
+      ],
+      "generated_token_ids": [
+        19661,
+        6738,
+        16401,
+        37972,
+        18675,
+        310,
+        279,
+        854,
+        2483,
+        364,
+        279,
+        1785,
+        310,
+        1817,
+        321,
+        42377
+      ],
+      "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct",
+      "runs": [
+        {
+          "ttft_ms": 55.219841,
+          "decode_step_latencies_ms": [
+            39.346842,
+            39.282044,
+            43.078912,
+            35.072673,
+            34.896033,
+            34.938273,
+            34.520611,
+            33.646786,
+            34.629191,
+            49.42071,
+            36.777918,
+            33.911368,
+            34.839068,
+            37.459571,
+            34.966311
+          ],
+          "end_to_end_ms": 612.006152,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 52.495107,
+          "decode_step_latencies_ms": [
+            44.532224,
+            36.516673,
+            34.46984,
+            34.612497,
+            33.104715,
+            33.810462,
+            33.705695,
+            41.48458,
+            42.020913,
+            34.542066,
+            34.175641,
+            33.816204,
+            33.909801,
+            33.883042,
+            40.551664
+          ],
+          "end_to_end_ms": 597.631124,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 49.856699,
+          "decode_step_latencies_ms": [
+            34.183439,
+            35.13486,
+            33.547632,
+            34.538976,
+            43.347307,
+            43.14887,
+            35.104174,
+            39.08449,
+            35.320579,
+            36.741781,
+            34.55361,
+            40.86621,
+            40.528796,
+            33.334456,
+            32.838979
+          ],
+          "end_to_end_ms": 602.130858,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 57.51183,
+          "decode_step_latencies_ms": [
+            37.247877,
+            34.946905,
+            34.555497,
+            33.677918,
+            35.491266,
+            34.041996,
+            48.757728,
+            37.332028,
+            34.333762,
+            34.413624,
+            32.790709,
+            34.059965,
+            40.548446,
+            59.047636,
+            37.146467
+          ],
+          "end_to_end_ms": 625.903654,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 55.607572,
+          "decode_step_latencies_ms": [
+            38.929607,
+            43.395895,
+            39.008213,
+            34.157511,
+            34.215835,
+            33.468788,
+            34.419898,
+            40.849984,
+            39.658199,
+            36.888778,
+            32.641844,
+            32.971636,
+            41.370683,
+            37.719959,
+            42.417043
+          ],
+          "end_to_end_ms": 617.721445,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 51.444437,
+          "decode_step_latencies_ms": [
+            34.247704,
+            34.732856,
+            34.913751,
+            50.800424,
+            34.74632,
+            36.829337,
+            36.364185,
+            34.931535,
+            33.578671,
+            37.135004,
+            43.563298,
+            36.289895,
+            33.979527,
+            35.388242,
+            34.903521
+          ],
+          "end_to_end_ms": 603.848707,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        }
+      ],
+      "patch_stats": {}
+    },
+    "triton_base": {
+      "mode": "triton_base",
+      "runtime_description": {
+        "forward_impl": "qwen35_triton_decode_forward_base",
+        "causal_conv1d_update_impl": "causal_conv1d_update",
+        "chunk_impl": "chunk_gated_delta_rule",
+        "recurrent_impl": "qwen35_triton_recurrent_gated_delta_rule"
+      },
+      "measured_runs": 6,
+      "ttft_summary": {
+        "count": 6,
+        "min_ms": 49.686435,
+        "max_ms": 63.49328,
+        "mean_ms": 55.130136,
+        "p50_ms": 52.030545,
+        "p90_ms": 63.49328
+      },
+      "decode_summary": {
+        "count": 90,
+        "min_ms": 32.596437,
+        "max_ms": 55.748732,
+        "mean_ms": 37.222362,
+        "p50_ms": 35.442124,
+        "p90_ms": 43.352651
+      },
+      "end_to_end_summary": {
+        "count": 6,
+        "min_ms": 597.453237,
+        "max_ms": 646.382071,
+        "mean_ms": 613.465572,
+        "p50_ms": 603.7324,
+        "p90_ms": 646.382071
+      },
+      "per_step_mean_decode_ms": [
+        36.867593,
+        36.406785,
+        36.62878,
+        37.95835,
+        35.957179,
+        35.137214,
+        37.880058,
+        37.963784,
+        37.385345,
+        35.725764,
+        36.988446,
+        38.836098,
+        36.731784,
+        38.779967,
+        39.08829
+      ],
+      "generated_token_ids": [
+        19661,
+        6738,
+        16401,
+        37972,
+        18675,
+        310,
+        279,
+        854,
+        2483,
+        364,
+        279,
+        1785,
+        310,
+        1817,
+        321,
+        42377
+      ],
+      "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct",
+      "runs": [
+        {
+          "ttft_ms": 62.343283,
+          "decode_step_latencies_ms": [
+            37.803308,
+            39.488731,
+            34.395122,
+            35.150058,
+            34.967912,
+            37.035476,
+            45.497942,
+            37.415118,
+            39.729892,
+            34.527174,
+            34.780093,
+            35.528167,
+            34.226437,
+            36.569273,
+            47.677634
+          ],
+          "end_to_end_ms": 627.13562,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 49.686435,
+          "decode_step_latencies_ms": [
+            35.384005,
+            33.976624,
+            34.404946,
+            46.940899,
+            37.632047,
+            33.95559,
+            35.654505,
+            36.49351,
+            33.904363,
+            33.527748,
+            39.88912,
+            41.805247,
+            37.567963,
+            36.940975,
+            34.672908
+          ],
+          "end_to_end_ms": 602.436885,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 51.196729,
+          "decode_step_latencies_ms": [
+            34.376492,
+            35.663958,
+            46.131124,
+            35.500242,
+            32.842475,
+            36.341222,
+            36.926903,
+            35.63601,
+            41.028951,
+            42.326712,
+            34.983774,
+            34.465884,
+            34.453005,
+            35.3398,
+            35.144422
+          ],
+          "end_to_end_ms": 602.357703,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 52.363269,
+          "decode_step_latencies_ms": [
+            33.981992,
+            34.909491,
+            36.259492,
+            41.554581,
+            40.471684,
+            33.813562,
+            34.791356,
+            37.660589,
+            40.148448,
+            35.356111,
+            40.488333,
+            35.058528,
+            32.596437,
+            33.166645,
+            34.832719
+          ],
+          "end_to_end_ms": 597.453237,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 63.49328,
+          "decode_step_latencies_ms": [
+            36.307107,
+            35.075123,
+            33.530232,
+            33.590733,
+            34.159875,
+            36.470061,
+            41.379588,
+            34.615065,
+            33.160277,
+            34.701021,
+            37.149088,
+            52.165155,
+            48.186033,
+            55.748732,
+            36.650701
+          ],
+          "end_to_end_ms": 646.382071,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 51.69782,
+          "decode_step_latencies_ms": [
+            43.352651,
+            39.326784,
+            35.051765,
+            35.013585,
+            35.669083,
+            33.207376,
+            33.030055,
+            45.962411,
+            36.340139,
+            33.915816,
+            34.640267,
+            33.993606,
+            33.360827,
+            34.914374,
+            45.551356
+          ],
+          "end_to_end_ms": 605.027915,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        }
+      ],
+      "patch_stats": {
+        "calls": 2160,
+        "batch_items": 2160,
+        "tokens": 2160
+      }
+    },
+    "triton_fused": {
+      "mode": "triton_fused",
+      "runtime_description": {
+        "forward_impl": "qwen35_triton_decode_forward",
+        "causal_conv1d_update_impl": "causal_conv1d_update",
+        "chunk_impl": "chunk_gated_delta_rule",
+        "recurrent_impl": "qwen35_triton_recurrent_gated_delta_rule"
+      },
+      "measured_runs": 6,
+      "ttft_summary": {
+        "count": 6,
+        "min_ms": 49.865597,
+        "max_ms": 63.190538,
+        "mean_ms": 53.493185,
+        "p50_ms": 51.988766,
+        "p90_ms": 63.190538
+      },
+      "decode_summary": {
+        "count": 90,
+        "min_ms": 30.735408,
+        "max_ms": 48.941975,
+        "mean_ms": 34.268322,
+        "p50_ms": 32.795496,
+        "p90_ms": 40.17226
+      },
+      "end_to_end_summary": {
+        "count": 6,
+        "min_ms": 559.048117,
+        "max_ms": 577.589944,
+        "mean_ms": 567.518019,
+        "p50_ms": 567.170792,
+        "p90_ms": 577.589944
+      },
+      "per_step_mean_decode_ms": [
+        32.372395,
+        37.514691,
+        34.352846,
+        33.482989,
+        33.395104,
+        36.029931,
+        32.998908,
+        32.638348,
+        36.09031,
+        34.304686,
+        34.200096,
+        32.25588,
+        34.35984,
+        35.582854,
+        34.445956
+      ],
+      "generated_token_ids": [
+        19661,
+        6738,
+        16401,
+        37972,
+        18675,
+        310,
+        279,
+        854,
+        2483,
+        364,
+        279,
+        1785,
+        310,
+        1817,
+        321,
+        42377
+      ],
+      "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct",
+      "runs": [
+        {
+          "ttft_ms": 52.203937,
+          "decode_step_latencies_ms": [
+            32.848571,
+            31.740858,
+            31.780784,
+            32.3165,
+            33.360094,
+            42.088201,
+            31.902323,
+            32.758216,
+            31.689355,
+            32.386835,
+            32.813011,
+            32.625436,
+            36.332192,
+            39.702051,
+            33.327738
+          ],
+          "end_to_end_ms": 559.876102,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 49.865597,
+          "decode_step_latencies_ms": [
+            32.270772,
+            45.815781,
+            35.433414,
+            32.142666,
+            31.159475,
+            32.718876,
+            30.757253,
+            31.001081,
+            36.878272,
+            37.343211,
+            32.836373,
+            32.111164,
+            32.118156,
+            32.527615,
+            34.068411
+          ],
+          "end_to_end_ms": 559.048117,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 53.852841,
+          "decode_step_latencies_ms": [
+            32.011246,
+            32.249167,
+            32.912531,
+            31.721906,
+            40.236383,
+            37.559358,
+            37.377985,
+            31.201811,
+            32.116822,
+            32.837438,
+            31.825675,
+            31.575248,
+            32.044183,
+            40.40398,
+            40.746027
+          ],
+          "end_to_end_ms": 570.672601,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 50.072599,
+          "decode_step_latencies_ms": [
+            33.350783,
+            48.941975,
+            33.096317,
+            36.061858,
+            31.40031,
+            32.05071,
+            33.10139,
+            34.726147,
+            44.409003,
+            32.575874,
+            32.469361,
+            32.862702,
+            34.061605,
+            33.30514,
+            35.10417
+          ],
+          "end_to_end_ms": 577.589944,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 51.773595,
+          "decode_step_latencies_ms": [
+            31.775139,
+            33.286132,
+            40.17226,
+            33.649066,
+            31.799441,
+            31.420767,
+            32.076515,
+            33.960355,
+            33.482443,
+            39.193887,
+            42.885871,
+            33.625324,
+            32.361338,
+            31.272536,
+            30.934314
+          ],
+          "end_to_end_ms": 563.668983,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 63.190538,
+          "decode_step_latencies_ms": [
+            31.977861,
+            33.054231,
+            32.721767,
+            35.005936,
+            32.414924,
+            40.341674,
+            32.77798,
+            32.182478,
+            37.965964,
+            31.490874,
+            32.370286,
+            30.735408,
+            39.241567,
+            36.285804,
+            32.495074
+          ],
+          "end_to_end_ms": 574.252366,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        }
+      ],
+      "patch_stats": {
+        "calls": 2160,
+        "batch_items": 2160,
+        "tokens": 2160
+      }
+    }
+  },
+  "pairwise_comparisons": {
+    "fla": {
+      "triton_base": {
+        "ttft_speedup": 0.973864,
+        "decode_mean_speedup": 0.996147,
+        "end_to_end_speedup": 0.994145,
+        "same_generation": true
+      },
+      "triton_fused": {
+        "ttft_speedup": 1.003665,
+        "decode_mean_speedup": 1.082019,
+        "end_to_end_speedup": 1.074633,
+        "same_generation": true
+      }
+    },
+    "triton_base": {
+      "fla": {
+        "ttft_speedup": 1.026838,
+        "decode_mean_speedup": 1.003867,
+        "end_to_end_speedup": 1.00589,
+        "same_generation": true
+      },
+      "triton_fused": {
+        "ttft_speedup": 1.030601,
+        "decode_mean_speedup": 1.086203,
+        "end_to_end_speedup": 1.080962,
+        "same_generation": true
+      }
+    },
+    "triton_fused": {
+      "fla": {
+        "ttft_speedup": 0.996348,
+        "decode_mean_speedup": 0.924199,
+        "end_to_end_speedup": 0.93055,
+        "same_generation": true
+      },
+      "triton_base": {
+        "ttft_speedup": 0.970308,
+        "decode_mean_speedup": 0.920638,
+        "end_to_end_speedup": 0.925102,
+        "same_generation": true
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+implementation                 latency_us   relative_speedup
+---------------------------- ------------ ------------------
+pytorch_naive                     282.713              1.000
+fla_fused_recurrent                94.446              2.993
+triton_decode                      28.965              9.761
+triton_decode_fused_gates          33.580              8.419

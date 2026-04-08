@@ -1,0 +1,51 @@
+command: /home/haozhong/vllm-env/bin/python3 -c <baseline_after_fla>
+returncode: 0
+
+=== STDOUT ===
+{
+  "python": "3.12.3",
+  "python_executable": "/home/haozhong/vllm-env/bin/python3",
+  "torch": "2.9.1+cu128",
+  "cuda_available": true,
+  "rows": [
+    {
+      "scenario": "short_128",
+      "input_tokens": 133,
+      "prefill_latency_s": 0.05322345859997313,
+      "decode_latency_s_per_token": 0.03481940757187445,
+      "peak_vram_mib": 8715.0498046875
+    },
+    {
+      "scenario": "mid_512",
+      "input_tokens": 527,
+      "prefill_latency_s": 0.1023659930999429,
+      "decode_latency_s_per_token": 0.03422390999375011,
+      "peak_vram_mib": 8775.72412109375
+    },
+    {
+      "scenario": "long_2048",
+      "input_tokens": 2060,
+      "prefill_latency_s": 0.31762330190006194,
+      "decode_latency_s_per_token": 0.034844738203124594,
+      "peak_vram_mib": 9015.29052734375
+    }
+  ]
+}
+
+
+=== STDERR ===
+The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/723 [00:00<04:22,  2.75it/s]
+Loading weights:   7%|▋         | 53/723 [00:00<00:04, 148.14it/s]
+Loading weights:  14%|█▎        | 98/723 [00:00<00:02, 230.09it/s]
+Loading weights:  20%|█▉        | 142/723 [00:00<00:02, 285.43it/s]
+Loading weights:  26%|██▌       | 186/723 [00:00<00:01, 326.09it/s]
+Loading weights:  31%|███▏      | 226/723 [00:00<00:01, 343.15it/s]
+Loading weights:  38%|███▊      | 273/723 [00:01<00:01, 364.66it/s]
+Loading weights:  44%|████▎     | 316/723 [00:01<00:01, 381.26it/s]
+Loading weights:  50%|████▉     | 360/723 [00:01<00:00, 393.27it/s]
+Loading weights:  56%|█████▋    | 407/723 [00:01<00:00, 394.13it/s]
+Loading weights:  78%|███████▊  | 564/723 [00:01<00:00, 724.25it/s]
+Loading weights: 100%|██████████| 723/723 [00:01<00:00, 482.01it/s]

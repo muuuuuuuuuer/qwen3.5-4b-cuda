@@ -1,0 +1,115 @@
+{
+  "run1": {
+    "measured_position_counts": {
+      "fla": {
+        "0": 2,
+        "2": 2,
+        "1": 2
+      },
+      "triton_base": {
+        "1": 2,
+        "0": 2,
+        "2": 2
+      },
+      "triton_fused": {
+        "2": 2,
+        "1": 2,
+        "0": 2
+      }
+    },
+    "modes": {
+      "fla": {
+        "ttft_mean_ms": 55.590423,
+        "decode_mean_ms": 38.280339,
+        "end_to_end_mean_ms": 629.79551
+      },
+      "triton_base": {
+        "ttft_mean_ms": 54.129495,
+        "decode_mean_ms": 38.994277,
+        "end_to_end_mean_ms": 639.043658
+      },
+      "triton_fused": {
+        "ttft_mean_ms": 56.95733,
+        "decode_mean_ms": 35.440615,
+        "end_to_end_mean_ms": 588.566555
+      }
+    },
+    "fla_vs_triton_base": {
+      "ttft_speedup": 1.026989,
+      "decode_mean_speedup": 0.981691,
+      "end_to_end_speedup": 0.985528,
+      "same_generation": true
+    },
+    "fla_vs_triton_fused": {
+      "ttft_speedup": 0.976001,
+      "decode_mean_speedup": 1.080126,
+      "end_to_end_speedup": 1.07005,
+      "same_generation": true
+    }
+  },
+  "run2": {
+    "measured_position_counts": {
+      "fla": {
+        "0": 2,
+        "2": 2,
+        "1": 2
+      },
+      "triton_base": {
+        "1": 2,
+        "0": 2,
+        "2": 2
+      },
+      "triton_fused": {
+        "2": 2,
+        "1": 2,
+        "0": 2
+      }
+    },
+    "modes": {
+      "fla": {
+        "ttft_mean_ms": 53.689248,
+        "decode_mean_ms": 37.078961,
+        "end_to_end_mean_ms": 609.873657
+      },
+      "triton_base": {
+        "ttft_mean_ms": 55.130136,
+        "decode_mean_ms": 37.222362,
+        "end_to_end_mean_ms": 613.465572
+      },
+      "triton_fused": {
+        "ttft_mean_ms": 53.493185,
+        "decode_mean_ms": 34.268322,
+        "end_to_end_mean_ms": 567.518019
+      }
+    },
+    "fla_vs_triton_base": {
+      "ttft_speedup": 0.973864,
+      "decode_mean_speedup": 0.996147,
+      "end_to_end_speedup": 0.994145,
+      "same_generation": true
+    },
+    "fla_vs_triton_fused": {
+      "ttft_speedup": 1.003665,
+      "decode_mean_speedup": 1.082019,
+      "end_to_end_speedup": 1.074633,
+      "same_generation": true
+    }
+  },
+  "two_run_average": {
+    "fla": {
+      "ttft_mean_ms": 54.639836,
+      "decode_mean_ms": 37.67965,
+      "end_to_end_mean_ms": 619.834584
+    },
+    "triton_base": {
+      "ttft_mean_ms": 54.629815,
+      "decode_mean_ms": 38.108319,
+      "end_to_end_mean_ms": 626.254615
+    },
+    "triton_fused": {
+      "ttft_mean_ms": 55.225257,
+      "decode_mean_ms": 34.854468,
+      "end_to_end_mean_ms": 578.042287
+    }
+  }
+}

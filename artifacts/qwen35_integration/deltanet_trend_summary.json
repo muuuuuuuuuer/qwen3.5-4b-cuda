@@ -1,0 +1,61 @@
+{
+  "microbenchmark": {
+    "scope": "kernel_only_recurrent_step",
+    "units": "us",
+    "pytorch_naive": 282.713,
+    "fla": 94.446,
+    "triton_base": 28.965,
+    "triton_fused": 33.58,
+    "triton_base_vs_fla_speedup": 3.260694,
+    "triton_fused_vs_fla_speedup": 2.812567,
+    "source": "/home/haozhong/ECE9483/artifacts/qwen35_integration/deltanet_microbenchmark_latest.txt"
+  },
+  "gen16": {
+    "scope": "shared_model_round_robin_single_user",
+    "gen_tokens": 16,
+    "units": "ms",
+    "fla": 33.709469,
+    "triton_base": 33.31741,
+    "triton_fused": 31.24143,
+    "fla_end_to_end": 555.854337,
+    "triton_base_end_to_end": 549.844391,
+    "triton_fused_end_to_end": 518.486953,
+    "triton_base_vs_fla_decode_speedup": 1.011767,
+    "triton_fused_vs_fla_decode_speedup": 1.078999,
+    "triton_base_vs_fla_end_to_end_speedup": 1.01093,
+    "triton_fused_vs_fla_end_to_end_speedup": 1.07207,
+    "source": "/home/haozhong/ECE9483/artifacts/qwen35_integration/qwen35_single_user_round_robin_compare_run3.json"
+  },
+  "gen128": {
+    "scope": "shared_model_round_robin_single_user",
+    "gen_tokens": 128,
+    "units": "ms",
+    "fla": 54.521829,
+    "triton_base": 52.00641,
+    "triton_fused": 51.228894,
+    "fla_end_to_end": 7008.484992,
+    "triton_base_end_to_end": 6677.568043,
+    "triton_fused_end_to_end": 6584.444324,
+    "triton_base_vs_fla_decode_speedup": 1.048367,
+    "triton_fused_vs_fla_decode_speedup": 1.064279,
+    "triton_base_vs_fla_end_to_end_speedup": 1.049557,
+    "triton_fused_vs_fla_end_to_end_speedup": 1.0644,
+    "source": "/home/haozhong/ECE9483/artifacts/qwen35_integration/qwen35_single_user_round_robin_compare_gen128.json"
+  },
+  "gen256": {
+    "scope": "shared_model_round_robin_single_user",
+    "gen_tokens": 256,
+    "units": "ms",
+    "fla": 54.904533,
+    "triton_base": 54.042846,
+    "triton_fused": 50.964443,
+    "fla_end_to_end": 14077.69127,
+    "triton_base_end_to_end": 13859.910201,
+    "triton_fused_end_to_end": 13076.209557,
+    "triton_base_vs_fla_decode_speedup": 1.015945,
+    "triton_fused_vs_fla_decode_speedup": 1.077311,
+    "triton_base_vs_fla_end_to_end_speedup": 1.015713,
+    "triton_fused_vs_fla_end_to_end_speedup": 1.076588,
+    "source": "/home/haozhong/ECE9483/artifacts/qwen35_integration/qwen35_single_user_round_robin_compare_gen256.json"
+  }
+}

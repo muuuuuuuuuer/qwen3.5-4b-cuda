@@ -1,0 +1,73 @@
+{
+  "fla": {
+    "ChunkGatedDeltaRuleFunction": {
+      "count": 24,
+      "total_us": 32158.15499999999,
+      "mean_us": 1339.9231249999996
+    },
+    "DaoAILab::_causal_conv1d_update_cpp": {
+      "count": 360,
+      "total_us": 36304.941999999995,
+      "mean_us": 100.8470611111111
+    },
+    "FusedRecurrentFunction": {
+      "count": 360,
+      "total_us": 65116.498000000036,
+      "mean_us": 180.87916111111122
+    },
+    "void causal_conv1d_update_kernel<Causal_conv1d_update_kernel_traits<64, 4, c10::Half, c10::Half>, false>(ConvParamsBase)": {
+      "count": 360,
+      "total_us": 918.9129999999992,
+      "mean_us": 2.552536111111109
+    },
+    "fused_recurrent_gated_delta_rule_fwd_kernel": {
+      "count": 360,
+      "total_us": 1852.7469999999998,
+      "mean_us": 5.146519444444444
+    }
+  },
+  "triton_base": {
+    "ChunkGatedDeltaRuleFunction": {
+      "count": 24,
+      "total_us": 28082.263000000003,
+      "mean_us": 1170.0942916666668
+    },
+    "DaoAILab::_causal_conv1d_update_cpp": {
+      "count": 360,
+      "total_us": 44442.63400000001,
+      "mean_us": 123.45176111111115
+    },
+    "void causal_conv1d_update_kernel<Causal_conv1d_update_kernel_traits<64, 4, c10::Half, c10::Half>, false>(ConvParamsBase)": {
+      "count": 360,
+      "total_us": 909.205,
+      "mean_us": 2.5255694444444448
+    },
+    "deltanet_decode_fused_kernel": {
+      "count": 360,
+      "total_us": 1872.097999999999,
+      "mean_us": 5.200272222222219
+    }
+  },
+  "triton_fused": {
+    "ChunkGatedDeltaRuleFunction": {
+      "count": 24,
+      "total_us": 24002.292999999998,
+      "mean_us": 1000.0955416666666
+    },
+    "DaoAILab::_causal_conv1d_update_cpp": {
+      "count": 360,
+      "total_us": 33401.61700000001,
+      "mean_us": 92.78226944444448
+    },
+    "deltanet_decode_fused_with_gates_kernel": {
+      "count": 360,
+      "total_us": 2041.9300000000019,
+      "mean_us": 5.672027777777783
+    },
+    "void causal_conv1d_update_kernel<Causal_conv1d_update_kernel_traits<64, 4, c10::Half, c10::Half>, false>(ConvParamsBase)": {
+      "count": 360,
+      "total_us": 913.9329999999985,
+      "mean_us": 2.5387027777777735
+    }
+  }
+}

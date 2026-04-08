@@ -1,0 +1,38 @@
+{
+  "before_log_path": "/home/haozhong/ECE9483/artifacts/deltanet_diagnostics/baseline_before_fla.log",
+  "before_fallback_warning": true,
+  "after_log_path": "/home/haozhong/ECE9483/artifacts/deltanet_diagnostics/baseline_after_fla.log",
+  "after_fallback_warning": true,
+  "compare_rows": [
+    {
+      "scenario": "short_128",
+      "before_decode_latency_s_per_token": 0.04317721108124957,
+      "after_decode_latency_s_per_token": 0.03481940757187445,
+      "decode_speedup": 1.2400329038374043,
+      "before_prefill_latency_s": 0.2361678029000359,
+      "after_prefill_latency_s": 0.05322345859997313
+    },
+    {
+      "scenario": "mid_512",
+      "before_decode_latency_s_per_token": 0.044513491971875395,
+      "after_decode_latency_s_per_token": 0.03422390999375011,
+      "decode_speedup": 1.3006547755649296,
+      "before_prefill_latency_s": 0.2863386720000108,
+      "after_prefill_latency_s": 0.1023659930999429
+    },
+    {
+      "scenario": "long_2048",
+      "before_decode_latency_s_per_token": 0.04301990975625074,
+      "after_decode_latency_s_per_token": 0.034844738203124594,
+      "decode_speedup": 1.2346171036059919,
+      "before_prefill_latency_s": 0.6157379737999917,
+      "after_prefill_latency_s": 0.31762330190006194
+    }
+  ],
+  "fla_source_info": {
+    "module_file": "/home/haozhong/vllm-env/lib/python3.12/site-packages/fla/ops/gated_delta_rule/fused_recurrent.py",
+    "saved_copy": "/home/haozhong/ECE9483/artifacts/deltanet_diagnostics/fla_fused_recurrent_source.py",
+    "line_count": 382
+  },
+  "fla_source_log_path": "/home/haozhong/ECE9483/artifacts/deltanet_diagnostics/fla_fused_recurrent_source.log"
+}

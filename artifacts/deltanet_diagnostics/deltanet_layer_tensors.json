@@ -1,0 +1,81 @@
+[
+  {
+    "kind": "parameter",
+    "name": "dt_bias",
+    "shape": [
+      32
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "kind": "parameter",
+    "name": "A_log",
+    "shape": [
+      32
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "kind": "parameter",
+    "name": "conv1d.weight",
+    "shape": [
+      8192,
+      1,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "kind": "parameter",
+    "name": "norm.weight",
+    "shape": [
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "kind": "parameter",
+    "name": "out_proj.weight",
+    "shape": [
+      2560,
+      4096
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "kind": "parameter",
+    "name": "in_proj_qkv.weight",
+    "shape": [
+      8192,
+      2560
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "kind": "parameter",
+    "name": "in_proj_z.weight",
+    "shape": [
+      4096,
+      2560
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "kind": "parameter",
+    "name": "in_proj_b.weight",
+    "shape": [
+      32,
+      2560
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "kind": "parameter",
+    "name": "in_proj_a.weight",
+    "shape": [
+      32,
+      2560
+    ],
+    "dtype": "torch.float16"
+  }
+]

@@ -1,0 +1,51 @@
+command: /home/haozhong/vllm-env/bin/python3 -c <baseline_before_fla>
+returncode: 0
+
+=== STDOUT ===
+{
+  "python": "3.12.3",
+  "python_executable": "/home/haozhong/vllm-env/bin/python3",
+  "torch": "2.9.1+cu128",
+  "cuda_available": true,
+  "rows": [
+    {
+      "scenario": "short_128",
+      "input_tokens": 133,
+      "prefill_latency_s": 0.2361678029000359,
+      "decode_latency_s_per_token": 0.04317721108124957,
+      "peak_vram_mib": 8739.12548828125
+    },
+    {
+      "scenario": "mid_512",
+      "input_tokens": 527,
+      "prefill_latency_s": 0.2863386720000108,
+      "decode_latency_s_per_token": 0.044513491971875395,
+      "peak_vram_mib": 8826.06982421875
+    },
+    {
+      "scenario": "long_2048",
+      "input_tokens": 2060,
+      "prefill_latency_s": 0.6157379737999917,
+      "decode_latency_s_per_token": 0.04301990975625074,
+      "peak_vram_mib": 9182.87646484375
+    }
+  ]
+}
+
+
+=== STDERR ===
+The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/723 [00:02<35:02,  2.91s/it]
+Loading weights:   6%|▌         | 42/723 [00:03<00:34, 19.46it/s]
+Loading weights:  12%|█▏        | 89/723 [00:03<00:13, 47.42it/s]
+Loading weights:  18%|█▊        | 132/723 [00:03<00:07, 78.58it/s]
+Loading weights:  24%|██▍       | 173/723 [00:03<00:04, 112.65it/s]
+Loading weights:  30%|███       | 220/723 [00:03<00:03, 157.09it/s]
+Loading weights:  36%|███▌      | 260/723 [00:03<00:02, 193.71it/s]
+Loading weights:  42%|████▏     | 306/723 [00:03<00:01, 240.87it/s]
+Loading weights:  49%|████▉     | 354/723 [00:03<00:01, 283.08it/s]
+Loading weights:  55%|█████▍    | 397/723 [00:03<00:01, 313.54it/s]
+Loading weights:  68%|██████▊   | 494/723 [00:03<00:00, 470.45it/s]
+Loading weights: 100%|██████████| 723/723 [00:04<00:00, 178.29it/s]

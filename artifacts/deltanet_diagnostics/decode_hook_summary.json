@@ -1,0 +1,26 @@
+[
+  {
+    "inputs": [
+      {
+        "name": "kwargs.hidden_states",
+        "shape": [
+          1,
+          1,
+          2560
+        ],
+        "dtype": "torch.float16"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "output",
+        "shape": [
+          1,
+          1,
+          2560
+        ],
+        "dtype": "torch.float16"
+      }
+    ]
+  }
+]

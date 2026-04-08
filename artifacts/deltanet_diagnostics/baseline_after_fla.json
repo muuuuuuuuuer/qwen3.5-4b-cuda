@@ -1,0 +1,29 @@
+{
+  "python": "3.12.3",
+  "python_executable": "/home/haozhong/vllm-env/bin/python3",
+  "torch": "2.9.1+cu128",
+  "cuda_available": true,
+  "rows": [
+    {
+      "scenario": "short_128",
+      "input_tokens": 133,
+      "prefill_latency_s": 0.05322345859997313,
+      "decode_latency_s_per_token": 0.03481940757187445,
+      "peak_vram_mib": 8715.0498046875
+    },
+    {
+      "scenario": "mid_512",
+      "input_tokens": 527,
+      "prefill_latency_s": 0.1023659930999429,
+      "decode_latency_s_per_token": 0.03422390999375011,
+      "peak_vram_mib": 8775.72412109375
+    },
+    {
+      "scenario": "long_2048",
+      "input_tokens": 2060,
+      "prefill_latency_s": 0.31762330190006194,
+      "decode_latency_s_per_token": 0.034844738203124594,
+      "peak_vram_mib": 9015.29052734375
+    }
+  ]
+}

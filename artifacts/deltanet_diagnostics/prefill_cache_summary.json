@@ -1,0 +1,618 @@
+[
+  {
+    "name": "layer 0.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 0.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 1.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 1.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 2.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 2.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 3.keys",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 3.values",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 4.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 4.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 5.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 5.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 6.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 6.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 7.keys",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 7.values",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 8.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 8.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 9.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 9.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 10.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 10.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 11.keys",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 11.values",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 12.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 12.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 13.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 13.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 14.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 14.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 15.keys",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 15.values",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 16.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 16.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 17.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 17.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 18.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 18.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 19.keys",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 19.values",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 20.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 20.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 21.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 21.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 22.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 22.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 23.keys",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 23.values",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 24.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 24.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 25.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 25.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 26.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 26.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 27.keys",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 27.values",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 28.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 28.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 29.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 29.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 30.conv_states",
+    "shape": [
+      1,
+      8192,
+      4
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 30.recurrent_states",
+    "shape": [
+      1,
+      32,
+      128,
+      128
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 31.keys",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  },
+  {
+    "name": "layer 31.values",
+    "shape": [
+      1,
+      4,
+      1,
+      256
+    ],
+    "dtype": "torch.float16"
+  }
+]

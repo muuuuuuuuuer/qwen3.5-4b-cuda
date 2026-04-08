@@ -5,6 +5,12 @@ from pathlib import Path
 
 import torch
 
+from deltanet_diagnostics import (
+    capture_forward_io,
+    find_first_deltanet_layer,
+    list_module_tensors,
+    summarize_past_key_values,
+)
 from cpu_reference import (
     check_correctness,
     quantized_matmul_reference,
@@ -381,6 +387,213 @@ class TextGenerationSmokeTests(unittest.TestCase):
         )
         self.assertEqual(tokenizer.decode_inputs, [([90, 91], True)])
         self.assertEqual(model.generate_calls[0]["max_new_tokens"], 2)
+
+
+class DeltaNetDiagnosticsTests(unittest.TestCase):
+    def test_find_first_deltanet_layer_prefers_wrapped_model_path(self):
+        linear_attn = torch.nn.Linear(4, 4, bias=False)
+
+        class WrappedLanguageModel(torch.nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.layers = torch.nn.ModuleList([torch.nn.Module()])
+                self.layers[0].linear_attn = linear_attn
+
+        class WrappedModel(torch.nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.language_model = WrappedLanguageModel()
+
+        class RootModel(torch.nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.model = WrappedModel()
+
+        info = find_first_deltanet_layer(RootModel())
+
+        self.assertEqual(info["attr_path"], "model.language_model.layers[0].linear_attn")
+        self.assertEqual(info["module_name"], "model.language_model.layers.0.linear_attn")
+        self.assertIs(info["module"], linear_attn)
+
+    def test_find_first_deltanet_layer_falls_back_to_direct_language_model(self):
+        linear_attn = torch.nn.Linear(4, 4, bias=False)
+
+        class DirectLanguageModel(torch.nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.layers = torch.nn.ModuleList([torch.nn.Module()])
+                self.layers[0].linear_attn = linear_attn
+
+        class RootModel(torch.nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.language_model = DirectLanguageModel()
+
+        info = find_first_deltanet_layer(RootModel())
+
+        self.assertEqual(info["attr_path"], "language_model.layers[0].linear_attn")
+        self.assertEqual(info["module_name"], "language_model.layers.0.linear_attn")
+        self.assertIs(info["module"], linear_attn)
+
+    def test_list_module_tensors_reports_parameters_and_buffers(self):
+        class TinyDeltaNet(torch.nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.proj = torch.nn.Linear(3, 5, bias=False)
+                self.register_buffer("state", torch.zeros(2, 3, dtype=torch.float16))
+
+        rows = list_module_tensors(TinyDeltaNet())
+
+        self.assertEqual(
+            rows,
+            [
+                {
+                    "kind": "parameter",
+                    "name": "proj.weight",
+                    "shape": [5, 3],
+                    "dtype": "torch.float32",
+                },
+                {
+                    "kind": "buffer",
+                    "name": "state",
+                    "shape": [2, 3],
+                    "dtype": "torch.float16",
+                },
+            ],
+        )
+
+    def test_capture_forward_io_records_tensor_shapes(self):
+        module = torch.nn.Linear(3, 2, bias=False)
+        x = torch.randn(4, 3)
+
+        calls = capture_forward_io(module, lambda: module(x))
+
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(
+            calls[0],
+            {
+                "inputs": [
+                    {
+                        "name": "inputs[0]",
+                        "shape": [4, 3],
+                        "dtype": "torch.float32",
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "output",
+                        "shape": [4, 2],
+                        "dtype": "torch.float32",
+                    }
+                ],
+            },
+        )
+
+    def test_capture_forward_io_records_tensor_kwargs(self):
+        class KwargOnlyModule(torch.nn.Module):
+            def forward(self, *, hidden_states):
+                return hidden_states + 1
+
+        module = KwargOnlyModule()
+        x = torch.randn(2, 3)
+
+        calls = capture_forward_io(module, lambda: module(hidden_states=x))
+
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(
+            calls[0],
+            {
+                "inputs": [
+                    {
+                        "name": "kwargs.hidden_states",
+                        "shape": [2, 3],
+                        "dtype": "torch.float32",
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "output",
+                        "shape": [2, 3],
+                        "dtype": "torch.float32",
+                    }
+                ],
+            },
+        )
+
+    def test_summarize_past_key_values_handles_tuples_and_mappings(self):
+        cache = [
+            (
+                torch.zeros(1, 2, 3, dtype=torch.float16),
+                torch.ones(1, 2, 4, dtype=torch.float16),
+            ),
+            {"state": torch.zeros(5, 6, dtype=torch.float32)},
+        ]
+
+        summary = summarize_past_key_values(cache)
+
+        self.assertEqual(
+            summary,
+            [
+                {
+                    "name": "layer 0[0]",
+                    "shape": [1, 2, 3],
+                    "dtype": "torch.float16",
+                },
+                {
+                    "name": "layer 0[1]",
+                    "shape": [1, 2, 4],
+                    "dtype": "torch.float16",
+                },
+                {
+                    "name": "layer 1.state",
+                    "shape": [5, 6],
+                    "dtype": "torch.float32",
+                },
+            ],
+        )
+
+    def test_summarize_past_key_values_handles_dynamic_cache_layers(self):
+        class FakeLinearAttentionLayer:
+            def __init__(self):
+                self.conv_states = torch.zeros(1, 4, 128, 4, dtype=torch.float16)
+                self.recurrent_states = torch.zeros(1, 32, 128, 128, dtype=torch.float16)
+
+        class FakeDynamicLayer:
+            def __init__(self):
+                self.keys = torch.zeros(1, 4, 1, 256, dtype=torch.float16)
+                self.values = torch.zeros(1, 4, 1, 256, dtype=torch.float16)
+
+        class FakeDynamicCache:
+            def __init__(self):
+                self.layers = [FakeLinearAttentionLayer(), FakeDynamicLayer()]
+
+        summary = summarize_past_key_values(FakeDynamicCache())
+
+        self.assertEqual(
+            summary,
+            [
+                {
+                    "name": "layer 0.conv_states",
+                    "shape": [1, 4, 128, 4],
+                    "dtype": "torch.float16",
+                },
+                {
+                    "name": "layer 0.recurrent_states",
+                    "shape": [1, 32, 128, 128],
+                    "dtype": "torch.float16",
+                },
+                {
+                    "name": "layer 1.keys",
+                    "shape": [1, 4, 1, 256],
+                    "dtype": "torch.float16",
+                },
+                {
+                    "name": "layer 1.values",
+                    "shape": [1, 4, 1, 256],
+                    "dtype": "torch.float16",
+                },
+            ],
+        )
 
 
 if __name__ == "__main__":
