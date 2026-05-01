@@ -1,3 +1,5 @@
+"""Regression tests for shared single-user benchmark summarization helpers."""
+
 import unittest
 
 from triton_kernels.qwen35_single_user_benchmark import (
@@ -49,6 +51,8 @@ class SingleUserBenchmarkCompareTests(unittest.TestCase):
         self.assertEqual(comparison["decode_mean_speedup"], 1.25)
         self.assertEqual(comparison["end_to_end_speedup"], round(680.0 / 540.0, 6))
         self.assertTrue(comparison["same_generation"])
+        self.assertEqual(comparison["token_diff_count"], 0)
+        self.assertEqual(comparison["token_diff_rate"], 0.0)
 
     def test_compare_single_user_results_detects_generation_difference(self):
         reference = {
@@ -67,6 +71,8 @@ class SingleUserBenchmarkCompareTests(unittest.TestCase):
         comparison = compare_single_user_results(reference, candidate)
 
         self.assertFalse(comparison["same_generation"])
+        self.assertEqual(comparison["token_diff_count"], 1)
+        self.assertEqual(comparison["token_diff_rate"], round(1 / 3, 6))
 
 
 class SingleUserBenchmarkSchedulingTests(unittest.TestCase):

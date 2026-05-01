@@ -1,3 +1,9 @@
+"""Shared summary helpers for single-user serving benchmarks.
+
+These utilities define how the project reports mean latency, percentile
+latency, round-robin ordering, and strict same-generation checks.
+"""
+
 from __future__ import annotations
 
 import math
@@ -62,7 +68,25 @@ def _safe_speedup(reference_ms: float | None, candidate_ms: float | None) -> flo
     return round(reference_ms / candidate_ms, 6)
 
 
+def _token_diff_stats(reference_tokens: list[int], candidate_tokens: list[int]) -> tuple[int, float]:
+    common = min(len(reference_tokens), len(candidate_tokens))
+    mismatches = sum(
+        1
+        for ref_token, candidate_token in zip(reference_tokens[:common], candidate_tokens[:common])
+        if ref_token != candidate_token
+    )
+    diff_count = mismatches + abs(len(reference_tokens) - len(candidate_tokens))
+    denominator = max(len(reference_tokens), len(candidate_tokens))
+    if denominator == 0:
+        return diff_count, 0.0
+    return diff_count, round(diff_count / denominator, 6)
+
+
 def compare_single_user_results(reference: dict, candidate: dict) -> dict[str, float | bool | None]:
+    token_diff_count, token_diff_rate = _token_diff_stats(
+        reference["generated_token_ids"],
+        candidate["generated_token_ids"],
+    )
     return {
         "ttft_speedup": _safe_speedup(reference["ttft_summary"]["mean_ms"], candidate["ttft_summary"]["mean_ms"]),
         "decode_mean_speedup": _safe_speedup(
@@ -73,5 +97,9 @@ def compare_single_user_results(reference: dict, candidate: dict) -> dict[str, f
             reference["end_to_end_summary"]["mean_ms"],
             candidate["end_to_end_summary"]["mean_ms"],
         ),
+        # The project log uses strict token-by-token equality when deciding
+        # whether an optimization preserved generation quality.
         "same_generation": reference["generated_token_ids"] == candidate["generated_token_ids"],
+        "token_diff_count": token_diff_count,
+        "token_diff_rate": token_diff_rate,
     }

@@ -1,3 +1,9 @@
+"""Phase 2A microbenchmark driver for decode-specialized DeltaNet Triton kernels.
+
+Reproduces the kernel-only comparison against PyTorch naive and FLA recorded in
+the project log before end-to-end integration.
+"""
+
 from __future__ import annotations
 
 import argparse
@@ -9,9 +15,12 @@ import torch.nn.functional as F
 
 from fla.ops.gated_delta_rule import fused_recurrent_gated_delta_rule
 from triton_kernels.deltanet_decode import (
+    DEFAULT_DELTANET_KERNEL_CONFIG,
+    DEFAULT_FUSED_GATE_KERNEL_CONFIG,
     DeltaNetKernelConfig,
     deltanet_decode_step,
     deltanet_decode_step_fused_gates,
+    deltanet_l2_normalize_qk,
 )
 
 
@@ -111,8 +120,28 @@ def measure_latency_us(fn: Callable[[], torch.Tensor], warmup: int, iters: int) 
 def build_benchmarks(inputs: dict[str, torch.Tensor]) -> list[tuple[str, Callable[[], torch.Tensor]]]:
     state_naive = inputs["state"].clone()
     state_fla = inputs["state"].clone()
-    state_triton = inputs["state"].clone()
-    state_fused = inputs["state"].clone()
+    state_triton_manual = inputs["state"].clone()
+    state_triton_autotune = inputs["state"].clone()
+    state_fused_manual = inputs["state"].clone()
+    state_fused_autotune = inputs["state"].clone()
+    state_fused_prenorm_manual = inputs["state"].clone()
+    state_fused_prenorm_kernel_only = inputs["state"].clone()
+    state_fused_prenorm_with_normalize = inputs["state"].clone()
+    q_norm, k_norm = deltanet_l2_normalize_qk(inputs["q_expanded"], inputs["k_expanded"])
+
+    def fused_prenorm_with_normalize_step() -> torch.Tensor:
+        current_q_norm, current_k_norm = deltanet_l2_normalize_qk(inputs["q_expanded"], inputs["k_expanded"])
+        return deltanet_decode_step_fused_gates(
+            current_q_norm,
+            current_k_norm,
+            inputs["v"],
+            inputs["a"],
+            inputs["b"],
+            inputs["a_log"],
+            inputs["dt_bias"],
+            state_fused_prenorm_with_normalize,
+            use_qk_l2norm=False,
+        )
 
     return [
         (
@@ -138,18 +167,30 @@ def build_benchmarks(inputs: dict[str, torch.Tensor]) -> list[tuple[str, Callabl
             ),
         ),
         (
-            "triton_decode",
+            "triton_decode_manual_bv32",
             lambda: deltanet_decode_step(
                 inputs["q_expanded"],
                 inputs["k_expanded"],
                 inputs["v"],
                 inputs["g"],
                 inputs["beta"],
-                state_triton,
+                state_triton_manual,
+                kernel_config=DEFAULT_DELTANET_KERNEL_CONFIG,
             ),
         ),
         (
-            "triton_decode_fused_gates",
+            "triton_decode_autotune",
+            lambda: deltanet_decode_step(
+                inputs["q_expanded"],
+                inputs["k_expanded"],
+                inputs["v"],
+                inputs["g"],
+                inputs["beta"],
+                state_triton_autotune,
+            ),
+        ),
+        (
+            "triton_fused_manual_bv64",
             lambda: deltanet_decode_step_fused_gates(
                 inputs["q_expanded"],
                 inputs["k_expanded"],
@@ -158,8 +199,55 @@ def build_benchmarks(inputs: dict[str, torch.Tensor]) -> list[tuple[str, Callabl
                 inputs["b"],
                 inputs["a_log"],
                 inputs["dt_bias"],
-                state_fused,
+                state_fused_manual,
+                kernel_config=DEFAULT_FUSED_GATE_KERNEL_CONFIG,
             ),
+        ),
+        (
+            "triton_fused_autotune",
+            lambda: deltanet_decode_step_fused_gates(
+                inputs["q_expanded"],
+                inputs["k_expanded"],
+                inputs["v"],
+                inputs["a"],
+                inputs["b"],
+                inputs["a_log"],
+                inputs["dt_bias"],
+                state_fused_autotune,
+            ),
+        ),
+        (
+            "triton_fused_prenorm_bv64",
+            lambda: deltanet_decode_step_fused_gates(
+                q_norm,
+                k_norm,
+                inputs["v"],
+                inputs["a"],
+                inputs["b"],
+                inputs["a_log"],
+                inputs["dt_bias"],
+                state_fused_prenorm_manual,
+                use_qk_l2norm=False,
+                kernel_config=DEFAULT_FUSED_GATE_KERNEL_CONFIG,
+            ),
+        ),
+        (
+            "triton_fused_prenorm_kernel",
+            lambda: deltanet_decode_step_fused_gates(
+                q_norm,
+                k_norm,
+                inputs["v"],
+                inputs["a"],
+                inputs["b"],
+                inputs["a_log"],
+                inputs["dt_bias"],
+                state_fused_prenorm_kernel_only,
+                use_qk_l2norm=False,
+            ),
+        ),
+        (
+            "triton_fused_prenorm_included",
+            fused_prenorm_with_normalize_step,
         ),
     ]
 

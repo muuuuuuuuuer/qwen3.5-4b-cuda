@@ -1,3 +1,9 @@
+"""Profiling companion for Phase 2B and later reality checks.
+
+Collects operator-level evidence showing decode is dominated by projection work
+and launch overhead, not only the recurrent DeltaNet update.
+"""
+
 from __future__ import annotations
 
 import argparse

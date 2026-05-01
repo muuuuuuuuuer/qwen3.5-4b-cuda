@@ -1,3 +1,9 @@
+"""Profiler summarization helpers for the project's reality-check passes.
+
+Used to turn raw PyTorch profiler events into the operator tables cited when
+explaining why recurrent-kernel speedups capped out end-to-end.
+"""
+
 from __future__ import annotations
 
 from typing import Any, Iterable

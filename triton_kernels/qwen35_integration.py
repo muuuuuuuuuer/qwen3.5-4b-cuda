@@ -1,9 +1,17 @@
+"""Phase 2B DeltaNet runtime integration for Qwen3.5.
+
+These helpers patch only the decode-time DeltaNet path so the repository can
+compare PyTorch, FLA, and Triton recurrent implementations under one serving
+benchmark.
+"""
+
 from __future__ import annotations
 
 import types
 from typing import Any
 
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 from transformers.models.qwen3_5.modeling_qwen3_5 import (
     apply_mask_to_padding_states,
@@ -19,9 +27,11 @@ from transformers.models.qwen3_5.modeling_qwen3_5 import (
 from triton_kernels.deltanet_decode import (
     DEFAULT_DELTANET_KERNEL_CONFIG,
     DEFAULT_FUSED_GATE_KERNEL_CONFIG,
+    DEFAULT_LOWRANK_BETA_GATE_KERNEL_CONFIG,
     deltanet_decode_step,
     deltanet_decode_step_fused_gates,
 )
+from triton_kernels.qwen35_projection_pack import qwen35_grouped_projection_conv_lowrank_deltanet
 
 
 _PATCH_STATS = {
@@ -30,7 +40,17 @@ _PATCH_STATS = {
     "tokens": 0,
 }
 
-_RUNTIME_MODES = {"torch", "fla", "triton", "triton_base", "triton_fused"}
+_RUNTIME_MODES = {
+    "torch",
+    "fla",
+    "triton",
+    "triton_base",
+    "triton_fused",
+    "triton_lowrank_beta_gate_packed",
+}
+
+DEFAULT_LOWRANK_BETA_GATE_RANK = 8
+LOWRANK_BETA_GATE_INIT_STD = 1e-3
 
 
 def reset_qwen35_triton_patch_stats() -> None:
@@ -75,6 +95,57 @@ def _ensure_original_forward(linear_attn: Any) -> None:
 def _restore_original_forward(linear_attn: Any) -> None:
     if hasattr(linear_attn, "_original_forward"):
         linear_attn.forward = linear_attn._original_forward
+
+
+def _infer_module_device(linear_attn: Any) -> torch.device:
+    if hasattr(linear_attn, "parameters"):
+        for parameter in linear_attn.parameters():
+            return parameter.device
+    a_log = getattr(linear_attn, "A_log", None)
+    if isinstance(a_log, torch.Tensor):
+        return a_log.device
+    return torch.device("cpu")
+
+
+def _reset_lowrank_gate_parameters(linear_attn: Any, init_std: float = LOWRANK_BETA_GATE_INIT_STD) -> None:
+    nn.init.normal_(linear_attn.Wb_down.weight, mean=0.0, std=init_std)
+    nn.init.zeros_(linear_attn.Wb_up.weight)
+    nn.init.zeros_(linear_attn.Wb_up.bias)
+
+
+def _ensure_lowrank_beta_gate_modules(linear_attn: Any) -> None:
+    """Attach LoRA-style low-rank beta-gate modules that initially preserve scalar fused-gate output."""
+    k_dim = int(linear_attn.head_k_dim)
+    v_dim = int(linear_attn.head_v_dim)
+    rank = int(getattr(linear_attn, "lowrank_beta_gate_rank", DEFAULT_LOWRANK_BETA_GATE_RANK))
+    if rank <= 0:
+        raise ValueError("lowrank_beta_gate_rank must be positive")
+    device = _infer_module_device(linear_attn)
+
+    down = getattr(linear_attn, "Wb_down", None)
+    up = getattr(linear_attn, "Wb_up", None)
+    created = False
+    if down is None:
+        down = nn.Linear(k_dim, rank, bias=False, device=device, dtype=torch.float32)
+        setattr(linear_attn, "Wb_down", down)
+        created = True
+    if up is None:
+        up = nn.Linear(rank, v_dim, bias=True, device=device, dtype=torch.float32)
+        setattr(linear_attn, "Wb_up", up)
+        created = True
+
+    if tuple(down.weight.shape) != (rank, k_dim):
+        raise ValueError(f"Wb_down.weight must have shape [{rank}, {k_dim}]")
+    if down.bias is not None:
+        raise ValueError("Wb_down.bias must be None")
+    if tuple(up.weight.shape) != (v_dim, rank):
+        raise ValueError(f"Wb_up.weight must have shape [{v_dim}, {rank}]")
+    if up.bias is None or tuple(up.bias.shape) != (v_dim,):
+        raise ValueError(f"Wb_up.bias must have shape [{v_dim}]")
+
+    linear_attn.lowrank_beta_gate_rank = rank
+    if created:
+        _reset_lowrank_gate_parameters(linear_attn)
 
 
 def _require_fla_fast_path() -> None:
@@ -163,6 +234,8 @@ def _qwen35_triton_decode_forward_impl(
 
     use_precomputed_states = cache_params is not None and cache_params.has_previous_state(self.layer_idx) and seq_len == 1
     if not use_precomputed_states:
+        # Prefill stays on the original implementation. Proposal scoping and
+        # later profiling both showed the project's leverage was in decode.
         return self._original_forward(
             hidden_states=hidden_states,
             cache_params=cache_params,
@@ -205,6 +278,8 @@ def _qwen35_triton_decode_forward_impl(
         beta = b.sigmoid()
         g = -self.A_log.float().exp() * F.softplus(a.float() + self.dt_bias)
 
+    # This direct in-layer loop bypasses the higher-level adapter because later
+    # end-to-end work showed Python-side dispatch overhead matters in decode.
     for batch_idx in range(batch_size):
         if fuse_gates:
             core_attn_out[batch_idx, 0] = deltanet_decode_step_fused_gates(
@@ -268,6 +343,69 @@ def qwen35_triton_decode_forward(
     )
 
 
+def qwen35_triton_decode_forward_lowrank_beta_gate_packed(
+    self,
+    hidden_states: torch.Tensor,
+    cache_params: Any | None = None,
+    attention_mask: torch.Tensor | None = None,
+):
+    """Decode path using fused grouped projection+conv plus grouped-QK low-rank DeltaNet."""
+    hidden_states = apply_mask_to_padding_states(hidden_states, attention_mask)
+    batch_size, seq_len, _ = hidden_states.shape
+
+    use_precomputed_states = cache_params is not None and cache_params.has_previous_state(self.layer_idx) and seq_len == 1
+    if not use_precomputed_states:
+        return self._original_forward(
+            hidden_states=hidden_states,
+            cache_params=cache_params,
+            attention_mask=attention_mask,
+        )
+    if self.activation not in {"silu", "swish"}:
+        raise ValueError("The packed DeltaNet decode path supports silu/swish activation only")
+    if self.conv1d.bias is not None:
+        raise ValueError("The packed DeltaNet decode path expects a bias-free depthwise conv")
+    if self.num_v_heads % self.num_k_heads != 0:
+        raise ValueError("num_v_heads must be an integer multiple of num_k_heads")
+
+    _ensure_lowrank_beta_gate_modules(self)
+    conv_state = cache_params.layers[self.layer_idx].conv_states
+    recurrent_state = cache_params.layers[self.layer_idx].recurrent_states
+
+    _record_patch_call(batch_size, seq_len)
+    kernel_config = getattr(self, "_triton_kernel_config", DEFAULT_LOWRANK_BETA_GATE_KERNEL_CONFIG)
+    core_attn_out, z = qwen35_grouped_projection_conv_lowrank_deltanet(
+        hidden_states,
+        conv_state,
+        self.in_proj_qkv.weight,
+        self.in_proj_z.weight,
+        self.in_proj_a.weight,
+        self.in_proj_b.weight,
+        self.conv1d.weight.squeeze(1),
+        self.A_log,
+        self.dt_bias,
+        self.Wb_down.weight,
+        self.Wb_up.weight,
+        self.Wb_up.bias,
+        recurrent_state,
+        num_k_heads=self.num_k_heads,
+        num_v_heads=self.num_v_heads,
+        head_k_dim=self.head_k_dim,
+        head_v_dim=self.head_v_dim,
+        use_qk_l2norm=True,
+        block_d=int(getattr(self, "_triton_projection_pack_block_d", 64)),
+        num_warps=int(getattr(self, "_triton_projection_decode_num_warps", 8)),
+        num_stages=int(getattr(self, "_triton_projection_decode_num_stages", kernel_config.num_stages)),
+    )
+
+    core_attn_out = core_attn_out.reshape(batch_size, seq_len, self.num_v_heads, self.head_v_dim)
+    z = z.reshape(batch_size, seq_len, self.num_v_heads, self.head_v_dim)
+    core_attn_out = core_attn_out.reshape(-1, self.head_v_dim)
+    z = z.reshape(-1, self.head_v_dim)
+    core_attn_out = self.norm(core_attn_out, z)
+    core_attn_out = core_attn_out.reshape(batch_size, seq_len, -1)
+    return self.out_proj(core_attn_out)
+
+
 def apply_qwen35_deltanet_triton_patch(model: Any, patch_mode: str = "recurrent_only") -> int:
     """
     Patch Qwen3.5 linear attention modules to use Triton.
@@ -276,6 +414,7 @@ def apply_qwen35_deltanet_triton_patch(model: Any, patch_mode: str = "recurrent_
       - "recurrent_only": replace `recurrent_gated_delta_rule`
       - "full_forward": replace the whole decode forward path with the fused-gates Triton kernel
       - "full_forward_base": replace the whole decode forward path with the base Triton kernel
+      - "full_forward_lowrank_beta_gate_packed": replace decode with packed projection+low-rank beta gates
       - "full_forward_fused": alias for "full_forward"
     """
     linear_attn_modules = _iter_qwen35_linear_attn_modules(model)
@@ -290,6 +429,10 @@ def apply_qwen35_deltanet_triton_patch(model: Any, patch_mode: str = "recurrent_
         elif patch_mode in {"full_forward", "full_forward_fused"}:
             linear_attn.recurrent_gated_delta_rule = qwen35_triton_recurrent_gated_delta_rule
             linear_attn.forward = types.MethodType(qwen35_triton_decode_forward, linear_attn)
+        elif patch_mode == "full_forward_lowrank_beta_gate_packed":
+            _ensure_lowrank_beta_gate_modules(linear_attn)
+            linear_attn.recurrent_gated_delta_rule = qwen35_triton_recurrent_gated_delta_rule
+            linear_attn.forward = types.MethodType(qwen35_triton_decode_forward_lowrank_beta_gate_packed, linear_attn)
         else:
             raise ValueError(f"Unsupported patch_mode: {patch_mode}")
         patched += 1
@@ -306,6 +449,7 @@ def configure_qwen35_deltanet_runtime(model: Any, mode: str) -> int:
       - "triton": alias for "triton_fused"
       - "triton_base": use upstream FLA conv/chunk path plus Triton decode forward with external gate ops
       - "triton_fused": use upstream FLA conv/chunk path plus Triton decode forward with fused gate ops
+      - "triton_lowrank_beta_gate_packed": fuse decode projections/conv with low-rank beta DeltaNet
     """
     if mode not in _RUNTIME_MODES:
         raise ValueError(f"Unsupported mode: {mode}")
@@ -336,6 +480,10 @@ def configure_qwen35_deltanet_runtime(model: Any, mode: str) -> int:
         elif normalized_mode == "triton_fused":
             linear_attn.recurrent_gated_delta_rule = qwen35_triton_recurrent_gated_delta_rule
             linear_attn.forward = types.MethodType(qwen35_triton_decode_forward, linear_attn)
+        elif normalized_mode == "triton_lowrank_beta_gate_packed":
+            _ensure_lowrank_beta_gate_modules(linear_attn)
+            linear_attn.recurrent_gated_delta_rule = qwen35_triton_recurrent_gated_delta_rule
+            linear_attn.forward = types.MethodType(qwen35_triton_decode_forward_lowrank_beta_gate_packed, linear_attn)
 
     return len(linear_attn_modules)
 

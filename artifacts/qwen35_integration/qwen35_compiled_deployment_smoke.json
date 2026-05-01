@@ -1,0 +1,511 @@
+{
+  "prompt": "Explain what DeltaNet decode latency means in one short paragraph.",
+  "use_chat_template": true,
+  "gen_tokens": 4,
+  "warmup_runs": 1,
+  "runs": 1,
+  "quantized_path": "quantized_weights.pt",
+  "min_decode_params": 20000000,
+  "back8_layers": [
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31
+  ],
+  "modes": {
+    "fp16_eager": {
+      "mode": "fp16_eager",
+      "runtime_description": {
+        "mode": "fp16_eager",
+        "spec": {
+          "use_back8": false,
+          "compile_decode": false,
+          "disable_linear_attn_for_compile": false,
+          "deltanet_mode": "fla"
+        },
+        "ffn_runtime": {
+          "mode": "fp16",
+          "replaced_layers": 0,
+          "min_decode_params": 20000000,
+          "layer_indices": null
+        },
+        "deltanet_runtime": {
+          "forward_impl": "forward",
+          "causal_conv1d_update_impl": "causal_conv1d_update",
+          "chunk_impl": "chunk_gated_delta_rule",
+          "recurrent_impl": "fused_recurrent_gated_delta_rule"
+        },
+        "compile_runtime": {
+          "enabled": false,
+          "mode": null,
+          "fullgraph": null,
+          "compile_mlp": false,
+          "compile_self_attn": false,
+          "disable_linear_attn": false,
+          "compiled_mlp_layers": 0,
+          "compiled_self_attn_layers": 0,
+          "disabled_linear_attn_layers": 0,
+          "top_level_compile": false,
+          "top_level_compile_mode": null,
+          "top_level_fullgraph": null,
+          "compile_options": null
+        }
+      },
+      "measured_runs": 1,
+      "ttft_summary": {
+        "count": 1,
+        "min_ms": 55.981907,
+        "max_ms": 55.981907,
+        "mean_ms": 55.981907,
+        "p50_ms": 55.981907,
+        "p90_ms": 55.981907
+      },
+      "decode_summary": {
+        "count": 3,
+        "min_ms": 38.4826,
+        "max_ms": 42.21844,
+        "mean_ms": 40.618929,
+        "p50_ms": 41.155748,
+        "p90_ms": 42.21844
+      },
+      "end_to_end_summary": {
+        "count": 1,
+        "min_ms": 177.838695,
+        "max_ms": 177.838695,
+        "mean_ms": 177.838695,
+        "p50_ms": 177.838695,
+        "p90_ms": 177.838695
+      },
+      "per_step_mean_decode_ms": [
+        41.155748,
+        38.4826,
+        42.21844
+      ],
+      "generated_token_ids": [
+        19661,
+        6738,
+        16401,
+        37972
+      ],
+      "generated_text": "DeltaNet decode latency",
+      "runs": [
+        {
+          "ttft_ms": 55.981907,
+          "decode_step_latencies_ms": [
+            41.155748,
+            38.4826,
+            42.21844
+          ],
+          "end_to_end_ms": 177.838695,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972
+          ],
+          "generated_text": "DeltaNet decode latency"
+        }
+      ],
+      "patch_stats": {}
+    },
+    "fp16_compiled": {
+      "mode": "fp16_compiled",
+      "runtime_description": {
+        "mode": "fp16_compiled",
+        "spec": {
+          "use_back8": false,
+          "compile_decode": true,
+          "disable_linear_attn_for_compile": true,
+          "deltanet_mode": "fla"
+        },
+        "ffn_runtime": {
+          "mode": "fp16",
+          "replaced_layers": 0,
+          "min_decode_params": 20000000,
+          "layer_indices": null
+        },
+        "deltanet_runtime": {
+          "forward_impl": "forward",
+          "causal_conv1d_update_impl": "causal_conv1d_update",
+          "chunk_impl": "chunk_gated_delta_rule",
+          "recurrent_impl": "fused_recurrent_gated_delta_rule"
+        },
+        "compile_runtime": {
+          "enabled": true,
+          "mode": null,
+          "fullgraph": false,
+          "compile_mlp": true,
+          "compile_self_attn": true,
+          "disable_linear_attn": true,
+          "compiled_mlp_layers": 32,
+          "compiled_self_attn_layers": 8,
+          "disabled_linear_attn_layers": 24,
+          "top_level_compile": false,
+          "top_level_compile_mode": null,
+          "top_level_fullgraph": null,
+          "compile_options": {
+            "triton.cudagraphs": false
+          }
+        }
+      },
+      "measured_runs": 1,
+      "ttft_summary": {
+        "count": 1,
+        "min_ms": 74.93392,
+        "max_ms": 74.93392,
+        "mean_ms": 74.93392,
+        "p50_ms": 74.93392,
+        "p90_ms": 74.93392
+      },
+      "decode_summary": {
+        "count": 3,
+        "min_ms": 40.67668,
+        "max_ms": 64.600202,
+        "mean_ms": 49.383893,
+        "p50_ms": 42.874798,
+        "p90_ms": 64.600202
+      },
+      "end_to_end_summary": {
+        "count": 1,
+        "min_ms": 223.0856,
+        "max_ms": 223.0856,
+        "mean_ms": 223.0856,
+        "p50_ms": 223.0856,
+        "p90_ms": 223.0856
+      },
+      "per_step_mean_decode_ms": [
+        64.600202,
+        40.67668,
+        42.874798
+      ],
+      "generated_token_ids": [
+        19661,
+        6738,
+        16401,
+        37972
+      ],
+      "generated_text": "DeltaNet decode latency",
+      "runs": [
+        {
+          "ttft_ms": 74.93392,
+          "decode_step_latencies_ms": [
+            64.600202,
+            40.67668,
+            42.874798
+          ],
+          "end_to_end_ms": 223.0856,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972
+          ],
+          "generated_text": "DeltaNet decode latency"
+        }
+      ],
+      "patch_stats": {}
+    },
+    "back8_compiled": {
+      "mode": "back8_compiled",
+      "runtime_description": {
+        "mode": "back8_compiled",
+        "spec": {
+          "use_back8": true,
+          "compile_decode": true,
+          "disable_linear_attn_for_compile": true,
+          "deltanet_mode": "fla"
+        },
+        "ffn_runtime": {
+          "mode": "fused_ffn",
+          "replaced_layers": 8,
+          "min_decode_params": 20000000,
+          "layer_indices": [
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ]
+        },
+        "deltanet_runtime": {
+          "forward_impl": "forward",
+          "causal_conv1d_update_impl": "causal_conv1d_update",
+          "chunk_impl": "chunk_gated_delta_rule",
+          "recurrent_impl": "fused_recurrent_gated_delta_rule"
+        },
+        "compile_runtime": {
+          "enabled": true,
+          "mode": null,
+          "fullgraph": false,
+          "compile_mlp": true,
+          "compile_self_attn": true,
+          "disable_linear_attn": true,
+          "compiled_mlp_layers": 32,
+          "compiled_self_attn_layers": 8,
+          "disabled_linear_attn_layers": 24,
+          "top_level_compile": false,
+          "top_level_compile_mode": null,
+          "top_level_fullgraph": null,
+          "compile_options": {
+            "triton.cudagraphs": false
+          }
+        }
+      },
+      "measured_runs": 1,
+      "ttft_summary": {
+        "count": 1,
+        "min_ms": 61.38542,
+        "max_ms": 61.38542,
+        "mean_ms": 61.38542,
+        "p50_ms": 61.38542,
+        "p90_ms": 61.38542
+      },
+      "decode_summary": {
+        "count": 3,
+        "min_ms": 44.467333,
+        "max_ms": 47.540604,
+        "mean_ms": 45.756243,
+        "p50_ms": 45.260792,
+        "p90_ms": 47.540604
+      },
+      "end_to_end_summary": {
+        "count": 1,
+        "min_ms": 198.654149,
+        "max_ms": 198.654149,
+        "mean_ms": 198.654149,
+        "p50_ms": 198.654149,
+        "p90_ms": 198.654149
+      },
+      "per_step_mean_decode_ms": [
+        47.540604,
+        45.260792,
+        44.467333
+      ],
+      "generated_token_ids": [
+        19661,
+        6738,
+        16401,
+        37972
+      ],
+      "generated_text": "DeltaNet decode latency",
+      "runs": [
+        {
+          "ttft_ms": 61.38542,
+          "decode_step_latencies_ms": [
+            47.540604,
+            45.260792,
+            44.467333
+          ],
+          "end_to_end_ms": 198.654149,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972
+          ],
+          "generated_text": "DeltaNet decode latency"
+        }
+      ],
+      "patch_stats": {}
+    },
+    "back8_compiled_deltanet": {
+      "mode": "back8_compiled_deltanet",
+      "runtime_description": {
+        "mode": "back8_compiled_deltanet",
+        "spec": {
+          "use_back8": true,
+          "compile_decode": true,
+          "disable_linear_attn_for_compile": true,
+          "deltanet_mode": "triton_fused"
+        },
+        "ffn_runtime": {
+          "mode": "fused_ffn",
+          "replaced_layers": 8,
+          "min_decode_params": 20000000,
+          "layer_indices": [
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ]
+        },
+        "deltanet_runtime": {
+          "forward_impl": "qwen35_triton_decode_forward",
+          "causal_conv1d_update_impl": "causal_conv1d_update",
+          "chunk_impl": "chunk_gated_delta_rule",
+          "recurrent_impl": "qwen35_triton_recurrent_gated_delta_rule"
+        },
+        "compile_runtime": {
+          "enabled": true,
+          "mode": null,
+          "fullgraph": false,
+          "compile_mlp": true,
+          "compile_self_attn": true,
+          "disable_linear_attn": true,
+          "compiled_mlp_layers": 32,
+          "compiled_self_attn_layers": 8,
+          "disabled_linear_attn_layers": 24,
+          "top_level_compile": false,
+          "top_level_compile_mode": null,
+          "top_level_fullgraph": null,
+          "compile_options": {
+            "triton.cudagraphs": false
+          }
+        }
+      },
+      "measured_runs": 1,
+      "ttft_summary": {
+        "count": 1,
+        "min_ms": 56.71096,
+        "max_ms": 56.71096,
+        "mean_ms": 56.71096,
+        "p50_ms": 56.71096,
+        "p90_ms": 56.71096
+      },
+      "decode_summary": {
+        "count": 3,
+        "min_ms": 40.047558,
+        "max_ms": 42.880898,
+        "mean_ms": 41.190789,
+        "p50_ms": 40.64391,
+        "p90_ms": 42.880898
+      },
+      "end_to_end_summary": {
+        "count": 1,
+        "min_ms": 180.283326,
+        "max_ms": 180.283326,
+        "mean_ms": 180.283326,
+        "p50_ms": 180.283326,
+        "p90_ms": 180.283326
+      },
+      "per_step_mean_decode_ms": [
+        42.880898,
+        40.64391,
+        40.047558
+      ],
+      "generated_token_ids": [
+        19661,
+        6738,
+        16401,
+        37972
+      ],
+      "generated_text": "DeltaNet decode latency",
+      "runs": [
+        {
+          "ttft_ms": 56.71096,
+          "decode_step_latencies_ms": [
+            42.880898,
+            40.64391,
+            40.047558
+          ],
+          "end_to_end_ms": 180.283326,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972
+          ],
+          "generated_text": "DeltaNet decode latency"
+        }
+      ],
+      "patch_stats": {
+        "calls": 72,
+        "batch_items": 72,
+        "tokens": 72
+      }
+    }
+  },
+  "pairwise_comparisons": {
+    "fp16_eager": {
+      "fp16_compiled": {
+        "ttft_speedup": 0.747084,
+        "decode_mean_speedup": 0.822514,
+        "end_to_end_speedup": 0.797177,
+        "same_generation": true
+      },
+      "back8_compiled": {
+        "ttft_speedup": 0.911974,
+        "decode_mean_speedup": 0.887724,
+        "end_to_end_speedup": 0.895218,
+        "same_generation": true
+      },
+      "back8_compiled_deltanet": {
+        "ttft_speedup": 0.987144,
+        "decode_mean_speedup": 0.986117,
+        "end_to_end_speedup": 0.98644,
+        "same_generation": true
+      }
+    },
+    "fp16_compiled": {
+      "fp16_eager": {
+        "ttft_speedup": 1.338538,
+        "decode_mean_speedup": 1.215785,
+        "end_to_end_speedup": 1.254427,
+        "same_generation": true
+      },
+      "back8_compiled": {
+        "ttft_speedup": 1.220712,
+        "decode_mean_speedup": 1.079282,
+        "end_to_end_speedup": 1.122985,
+        "same_generation": true
+      },
+      "back8_compiled_deltanet": {
+        "ttft_speedup": 1.32133,
+        "decode_mean_speedup": 1.198906,
+        "end_to_end_speedup": 1.237417,
+        "same_generation": true
+      }
+    },
+    "back8_compiled": {
+      "fp16_eager": {
+        "ttft_speedup": 1.096522,
+        "decode_mean_speedup": 1.126476,
+        "end_to_end_speedup": 1.117047,
+        "same_generation": true
+      },
+      "fp16_compiled": {
+        "ttft_speedup": 0.819194,
+        "decode_mean_speedup": 0.926542,
+        "end_to_end_speedup": 0.890484,
+        "same_generation": true
+      },
+      "back8_compiled_deltanet": {
+        "ttft_speedup": 1.082426,
+        "decode_mean_speedup": 1.110837,
+        "end_to_end_speedup": 1.1019,
+        "same_generation": true
+      }
+    },
+    "back8_compiled_deltanet": {
+      "fp16_eager": {
+        "ttft_speedup": 1.013023,
+        "decode_mean_speedup": 1.014079,
+        "end_to_end_speedup": 1.013746,
+        "same_generation": true
+      },
+      "fp16_compiled": {
+        "ttft_speedup": 0.756813,
+        "decode_mean_speedup": 0.834094,
+        "end_to_end_speedup": 0.808135,
+        "same_generation": true
+      },
+      "back8_compiled": {
+        "ttft_speedup": 0.923851,
+        "decode_mean_speedup": 0.900222,
+        "end_to_end_speedup": 0.907524,
+        "same_generation": true
+      }
+    }
+  }
+}

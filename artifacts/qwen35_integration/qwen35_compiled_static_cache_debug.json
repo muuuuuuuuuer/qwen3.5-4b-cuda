@@ -1,0 +1,166 @@
+{
+  "prompt": "Explain what DeltaNet decode latency means in one short paragraph.",
+  "use_chat_template": true,
+  "gen_tokens": 16,
+  "warmup_runs": 1,
+  "runs": 1,
+  "quantized_path": "quantized_weights.pt",
+  "min_decode_params": 20000000,
+  "back8_layers": [],
+  "modes": {
+    "fp16_static_compiled": {
+      "mode": "fp16_static_compiled",
+      "runtime_description": {
+        "mode": "fp16_static_compiled",
+        "spec": {
+          "use_back8": false,
+          "use_static_cache": true,
+          "compile_decode": true,
+          "compile_after_prefill": true,
+          "disable_linear_attn_for_compile": false,
+          "deltanet_mode": "fla",
+          "compile_mode": "reduce-overhead",
+          "compile_options": null
+        },
+        "ffn_runtime": {
+          "mode": "fp16",
+          "replaced_layers": 0,
+          "min_decode_params": 20000000,
+          "layer_indices": null
+        },
+        "deltanet_runtime": {
+          "forward_impl": "forward",
+          "causal_conv1d_update_impl": "causal_conv1d_update",
+          "chunk_impl": "chunk_gated_delta_rule",
+          "recurrent_impl": "fused_recurrent_gated_delta_rule"
+        },
+        "static_cache_runtime": {
+          "enabled": true,
+          "patched_mask_creator": true
+        },
+        "compile_runtime": {
+          "enabled": true,
+          "mode": "reduce-overhead",
+          "fullgraph": false,
+          "compile_mlp": true,
+          "compile_self_attn": true,
+          "disable_linear_attn": false,
+          "compiled_mlp_layers": 32,
+          "compiled_self_attn_layers": 8,
+          "disabled_linear_attn_layers": 0,
+          "top_level_compile": false,
+          "top_level_compile_mode": null,
+          "top_level_fullgraph": null,
+          "compile_options": null
+        }
+      },
+      "measured_runs": 1,
+      "ttft_summary": {
+        "count": 1,
+        "min_ms": 60.147759,
+        "max_ms": 60.147759,
+        "mean_ms": 60.147759,
+        "p50_ms": 60.147759,
+        "p90_ms": 60.147759
+      },
+      "decode_summary": {
+        "count": 15,
+        "min_ms": 37.608283,
+        "max_ms": 59.024402,
+        "mean_ms": 42.290185,
+        "p50_ms": 39.716318,
+        "p90_ms": 52.112996
+      },
+      "end_to_end_summary": {
+        "count": 1,
+        "min_ms": 694.50053,
+        "max_ms": 694.50053,
+        "mean_ms": 694.50053,
+        "p50_ms": 694.50053,
+        "p90_ms": 694.50053
+      },
+      "per_step_mean_decode_ms": [
+        46.062887,
+        59.024402,
+        45.11887,
+        52.112996,
+        38.487602,
+        38.788962,
+        37.608283,
+        39.034234,
+        41.435522,
+        38.397172,
+        38.398992,
+        39.42294,
+        40.400624,
+        39.716318,
+        40.342967
+      ],
+      "generated_token_ids": [
+        19661,
+        6738,
+        16401,
+        37972,
+        18675,
+        310,
+        279,
+        854,
+        2483,
+        364,
+        279,
+        1785,
+        310,
+        1817,
+        321,
+        42377
+      ],
+      "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct",
+      "runs": [
+        {
+          "ttft_ms": 60.147759,
+          "decode_step_latencies_ms": [
+            46.062887,
+            59.024402,
+            45.11887,
+            52.112996,
+            38.487602,
+            38.788962,
+            37.608283,
+            39.034234,
+            41.435522,
+            38.397172,
+            38.398992,
+            39.42294,
+            40.400624,
+            39.716318,
+            40.342967
+          ],
+          "end_to_end_ms": 694.50053,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        }
+      ],
+      "patch_stats": {}
+    }
+  },
+  "pairwise_comparisons": {
+    "fp16_static_compiled": {}
+  }
+}

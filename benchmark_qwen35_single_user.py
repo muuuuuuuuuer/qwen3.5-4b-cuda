@@ -1,3 +1,9 @@
+"""Phase 2B baseline single-user decode benchmark.
+
+Provides the core TTFT, per-token decode, and end-to-end measurement loop that
+later deployment and profiling scripts reuse.
+"""
+
 from __future__ import annotations
 
 import argparse
@@ -24,7 +30,7 @@ from triton_kernels.qwen35_single_user_benchmark import (
 
 ARTIFACT_DIR = Path("artifacts/qwen35_integration")
 ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
-DEFAULT_MODES = ("torch", "fla", "triton_base", "triton_fused")
+DEFAULT_MODES = ("torch", "fla", "triton_base", "triton_fused", "triton_lowrank_beta_gate_packed")
 
 
 def reset_model_generation_state(model) -> None:

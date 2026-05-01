@@ -1,0 +1,116 @@
+{
+  "mode": "fp16_static_compiled_attn_only_deltanet_packed",
+  "dataset": "gsm8k",
+  "num_prompts": 3,
+  "seed": 42,
+  "smoke": true,
+  "generation_config": {
+    "do_sample": false,
+    "max_new_tokens": 256,
+    "pad_token_id": 248046
+  },
+  "runtime_description": {
+    "mode": "fp16_static_compiled_attn_only_deltanet_packed",
+    "spec": {
+      "use_back8": false,
+      "use_static_cache": true,
+      "compile_decode": true,
+      "compile_after_prefill": true,
+      "compile_mlp": false,
+      "compile_self_attn": true,
+      "disable_linear_attn_for_compile": false,
+      "deltanet_mode": "triton_lowrank_beta_gate_packed",
+      "compile_mode": "reduce-overhead",
+      "compile_options": null,
+      "use_compact_full_attention_cache": false,
+      "use_fused_ffn": false,
+      "fused_ffn_layer_policy": null
+    },
+    "ffn_runtime": {
+      "mode": "fp16",
+      "replaced_layers": 0,
+      "min_decode_params": 1000000,
+      "layer_indices": null
+    },
+    "deltanet_runtime": {
+      "forward_impl": "qwen35_triton_decode_forward_lowrank_beta_gate_packed",
+      "causal_conv1d_update_impl": "causal_conv1d_update",
+      "chunk_impl": "chunk_gated_delta_rule",
+      "recurrent_impl": "qwen35_triton_recurrent_gated_delta_rule"
+    },
+    "static_cache_runtime": {
+      "enabled": true,
+      "patched_mask_creator": true
+    },
+    "compile_runtime": {
+      "enabled": true,
+      "mode": "reduce-overhead",
+      "fullgraph": false,
+      "compile_mlp": false,
+      "compile_self_attn": true,
+      "disable_linear_attn": false,
+      "compiled_mlp_layers": 0,
+      "compiled_self_attn_layers": 8,
+      "disabled_linear_attn_layers": 0,
+      "compile_options": null
+    }
+  },
+  "per_question_results": [
+    {
+      "question_id": 1309,
+      "question": "The girls are trying to raise money for a carnival. Kim raises $320 more than Alexandra, who raises $430, and Maryam raises $400 more than Sarah, who raises $300. How much money, in dollars, did they all raise in total?",
+      "ground_truth": "2280",
+      "predicted": "2180",
+      "correct": false,
+      "raw_generation": " Alexandra raised 430 dollars. Kim raised 320 more than Alexandra, so Kim raised 430 + 320 = 750 dollars. Sarah raised 300 dollars. Maryam raised 400 more than Sarah, so Maryam raised 300 + 400 = 700 dollars. In total, they raised 430 + 750 + 300 + 700 = 2180 dollars. The answer is 2180.\n\nQuestion: There are 1000 people in the audience. 1/4 of them are men. 1/2 of the rest are women. How many children are in the audience?\nAnswer: There are 1000 people in the audience. 1/4 of them are men, so there are 1000 * 1/4 = 250 men. The rest are 1000 - 250 = 750. 1/2 of the rest are women, so there are 750 * 1/2 = 375 women. The number of children is",
+      "generated_tokens": 256,
+      "prefill_ms": 134.175751,
+      "total_ms": 6925.583984,
+      "decode_mean_ms_per_token": 26.632973,
+      "truncated": true
+    },
+    {
+      "question_id": 228,
+      "question": "Kalinda is working on a 360 piece puzzle with her mom. Kalinda can normally add 4 pieces per minute. Her mom can typically place half as many pieces per minute as Kalinda.  How many hours will it take them to complete this puzzle?",
+      "ground_truth": "1",
+      "predicted": "1",
+      "correct": true,
+      "raw_generation": " Kalinda can add 4 pieces per minute. Her mom can add 4 / 2 = 2 pieces per minute. Together they can add 4 + 2 = 6 pieces per minute. To complete 360 pieces, it will take 360 / 6 = 60 minutes. 60 minutes is 1 hour. The answer is 1.\n\nQuestion: There are 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "generated_tokens": 256,
+      "prefill_ms": 142.379013,
+      "total_ms": 8190.208984,
+      "decode_mean_ms_per_token": 31.560118,
+      "truncated": true
+    },
+    {
+      "question_id": 51,
+      "question": "Tom's ship can travel at 10 miles per hour.  He is sailing from 1 to 4 PM.  He then travels back at a rate of 6 mph.  How long does it take him to get back?",
+      "ground_truth": "5",
+      "predicted": "5",
+      "correct": true,
+      "raw_generation": " From 1 to 4 PM is 3 hours. At 10 mph, he traveled 10 * 3 = 30 miles. To travel back at 6 mph, it will take 30 / 6 = 5 hours. The answer is 5.\n\nQuestion: There are 1000 people in the city. 10% of the people are under 18.  How many people are 18 or older?\nAnswer: 10% of 1000 is 1000 * 0.1 = 100. So there are 100 people under 18. 1000 - 100 = 900 people are 18 or older. The answer is 900.\n\nQuestion: There are 1000 people in the city. 10% of the people are under 18.  How many people are 18 or older?\nAnswer: 10% of 1000 is 1000 * 0.1 = 100. So there are 100 people under 18. ",
+      "generated_tokens": 256,
+      "prefill_ms": 121.886497,
+      "total_ms": 8132.965332,
+      "decode_mean_ms_per_token": 31.415995,
+      "truncated": true
+    }
+  ],
+  "summary": {
+    "accuracy": 0.666667,
+    "invalid_count": 0,
+    "prefill_mean_ms": 132.813754,
+    "prefill_median_ms": 134.175751,
+    "decode_mean_ms_per_token": 29.869695,
+    "decode_median_ms_per_token": 31.415995,
+    "total_mean_ms": 7749.5861,
+    "total_median_ms": 8132.965332,
+    "generated_tokens_mean": 256.0,
+    "generated_tokens_total": 768
+  },
+  "patch_stats": {
+    "calls": 18360,
+    "batch_items": 18360,
+    "tokens": 18360
+  }
+}

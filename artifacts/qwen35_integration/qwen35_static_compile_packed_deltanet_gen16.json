@@ -1,0 +1,768 @@
+{
+  "prompt": "Explain what DeltaNet decode latency means in one short paragraph.",
+  "use_chat_template": true,
+  "gen_tokens": 16,
+  "warmup_runs": 1,
+  "runs": 3,
+  "quantized_path": "quantized_weights.pt",
+  "min_decode_params": 20000000,
+  "back8_layers": [],
+  "modes": {
+    "fp16_static_compiled_attn_only_deltanet": {
+      "mode": "fp16_static_compiled_attn_only_deltanet",
+      "runtime_description": {
+        "mode": "fp16_static_compiled_attn_only_deltanet",
+        "spec": {
+          "use_back8": false,
+          "use_static_cache": true,
+          "compile_decode": true,
+          "compile_after_prefill": true,
+          "compile_mlp": false,
+          "compile_self_attn": true,
+          "disable_linear_attn_for_compile": false,
+          "deltanet_mode": "triton_fused",
+          "compile_mode": "reduce-overhead",
+          "compile_options": null,
+          "use_compact_full_attention_cache": false,
+          "use_fused_ffn": false,
+          "fused_ffn_layer_policy": null
+        },
+        "ffn_runtime": {
+          "mode": "fp16",
+          "replaced_layers": 0,
+          "min_decode_params": 20000000,
+          "layer_indices": null
+        },
+        "deltanet_runtime": {
+          "forward_impl": "qwen35_triton_decode_forward",
+          "causal_conv1d_update_impl": "causal_conv1d_update",
+          "chunk_impl": "chunk_gated_delta_rule",
+          "recurrent_impl": "qwen35_triton_recurrent_gated_delta_rule"
+        },
+        "static_cache_runtime": {
+          "enabled": true,
+          "patched_mask_creator": true
+        },
+        "compact_kv_cache_runtime": {
+          "enabled": false,
+          "mode": null
+        },
+        "model_tensor_memory": {
+          "available": true,
+          "parameter_bytes": 9078531072,
+          "buffer_bytes": 320,
+          "total_tensor_bytes": 9078531392,
+          "total_tensor_mib": 8657.962,
+          "fp16_parameter_bytes": 9078531072,
+          "int8_buffer_bytes": 0,
+          "int8_buffer_mib": 0.0
+        },
+        "compile_runtime": {
+          "enabled": true,
+          "mode": "reduce-overhead",
+          "fullgraph": false,
+          "compile_mlp": false,
+          "compile_self_attn": true,
+          "disable_linear_attn": false,
+          "compiled_mlp_layers": 0,
+          "compiled_self_attn_layers": 8,
+          "disabled_linear_attn_layers": 0,
+          "top_level_compile": false,
+          "top_level_compile_mode": null,
+          "top_level_fullgraph": null,
+          "compile_options": null
+        }
+      },
+      "measured_runs": 3,
+      "ttft_summary": {
+        "count": 3,
+        "min_ms": 48.596547,
+        "max_ms": 52.941282,
+        "mean_ms": 50.993279,
+        "p50_ms": 51.442009,
+        "p90_ms": 52.941282
+      },
+      "decode_summary": {
+        "count": 45,
+        "min_ms": 26.496884,
+        "max_ms": 43.70147,
+        "mean_ms": 28.329953,
+        "p50_ms": 27.216699,
+        "p90_ms": 29.925811
+      },
+      "end_to_end_summary": {
+        "count": 3,
+        "min_ms": 465.562571,
+        "max_ms": 495.605384,
+        "mean_ms": 475.94258,
+        "p50_ms": 466.659785,
+        "p90_ms": 495.605384
+      },
+      "generated_token_nll_summary": {
+        "count": 48,
+        "min": 1.9e-05,
+        "max": 1.185436,
+        "mean": 0.401039
+      },
+      "mean_generated_token_nll_summary": {
+        "count": 3,
+        "min": 0.401039,
+        "max": 0.401039,
+        "mean": 0.401039
+      },
+      "generated_token_ppl_proxy_summary": {
+        "count": 3,
+        "min": 1.493375,
+        "max": 1.493375,
+        "mean": 1.493375
+      },
+      "peak_cuda_memory_allocated_mib_summary": {
+        "count": 3,
+        "min": 8707.148,
+        "max": 8707.148,
+        "mean": 8707.148
+      },
+      "context_tokens": 25,
+      "compact_kv_cache_summary": {
+        "enabled": false
+      },
+      "per_step_mean_decode_ms": [
+        34.894743,
+        33.724472,
+        29.046549,
+        27.43818,
+        26.958079,
+        27.142115,
+        26.959536,
+        27.340712,
+        27.284564,
+        27.250596,
+        27.032681,
+        26.757789,
+        26.794912,
+        28.10565,
+        28.218724
+      ],
+      "generated_token_ids": [
+        19661,
+        6738,
+        16401,
+        37972,
+        18675,
+        310,
+        279,
+        854,
+        2483,
+        364,
+        279,
+        1785,
+        310,
+        1817,
+        321,
+        42377
+      ],
+      "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct",
+      "runs": [
+        {
+          "ttft_ms": 52.941282,
+          "decode_step_latencies_ms": [
+            32.743948,
+            28.934022,
+            27.327929,
+            27.990851,
+            27.176471,
+            27.216699,
+            26.967244,
+            26.827244,
+            26.576404,
+            26.985936,
+            27.2435,
+            26.562873,
+            26.502301,
+            26.631995,
+            28.031086
+          ],
+          "end_to_end_ms": 466.659785,
+          "generated_token_nll": [
+            0.0412,
+            0.003306,
+            0.009679,
+            1.9e-05,
+            0.121176,
+            0.000157,
+            3.7e-05,
+            0.502376,
+            1.163885,
+            0.241421,
+            0.765527,
+            1.010251,
+            0.015821,
+            0.455254,
+            1.185436,
+            0.901074
+          ],
+          "mean_generated_token_nll": 0.401039,
+          "generated_token_ppl_proxy": 1.493375,
+          "cuda_memory": {
+            "allocated_mib": 8705.253,
+            "reserved_mib": 8742.0,
+            "peak_allocated_mib": 8707.148,
+            "peak_reserved_mib": 8742.0
+          },
+          "compact_kv_cache": {
+            "enabled": false
+          },
+          "context_tokens": 25,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 51.442009,
+          "decode_step_latencies_ms": [
+            29.925811,
+            28.537923,
+            27.31553,
+            26.63799,
+            26.516661,
+            27.002733,
+            26.545424,
+            28.14369,
+            27.057354,
+            26.971106,
+            27.240099,
+            27.21361,
+            27.105708,
+            29.237973,
+            28.66895
+          ],
+          "end_to_end_ms": 465.562571,
+          "generated_token_nll": [
+            0.0412,
+            0.003306,
+            0.009679,
+            1.9e-05,
+            0.121176,
+            0.000157,
+            3.7e-05,
+            0.502376,
+            1.163885,
+            0.241421,
+            0.765527,
+            1.010251,
+            0.015821,
+            0.455254,
+            1.185436,
+            0.901074
+          ],
+          "mean_generated_token_nll": 0.401039,
+          "generated_token_ppl_proxy": 1.493375,
+          "cuda_memory": {
+            "allocated_mib": 8705.253,
+            "reserved_mib": 8742.0,
+            "peak_allocated_mib": 8707.148,
+            "peak_reserved_mib": 8742.0
+          },
+          "compact_kv_cache": {
+            "enabled": false
+          },
+          "context_tokens": 25,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 48.596547,
+          "decode_step_latencies_ms": [
+            42.01447,
+            43.70147,
+            32.496188,
+            27.685698,
+            27.181104,
+            27.206912,
+            27.365941,
+            27.051202,
+            28.219934,
+            27.794746,
+            26.614443,
+            26.496884,
+            26.776727,
+            28.446981,
+            27.956137
+          ],
+          "end_to_end_ms": 495.605384,
+          "generated_token_nll": [
+            0.0412,
+            0.003306,
+            0.009679,
+            1.9e-05,
+            0.121176,
+            0.000157,
+            3.7e-05,
+            0.502376,
+            1.163885,
+            0.241421,
+            0.765527,
+            1.010251,
+            0.015821,
+            0.455254,
+            1.185436,
+            0.901074
+          ],
+          "mean_generated_token_nll": 0.401039,
+          "generated_token_ppl_proxy": 1.493375,
+          "cuda_memory": {
+            "allocated_mib": 8705.253,
+            "reserved_mib": 8742.0,
+            "peak_allocated_mib": 8707.148,
+            "peak_reserved_mib": 8742.0
+          },
+          "compact_kv_cache": {
+            "enabled": false
+          },
+          "context_tokens": 25,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        }
+      ],
+      "patch_stats": {
+        "calls": 1080,
+        "batch_items": 1080,
+        "tokens": 1080
+      }
+    },
+    "fp16_static_compiled_attn_only_deltanet_packed": {
+      "mode": "fp16_static_compiled_attn_only_deltanet_packed",
+      "runtime_description": {
+        "mode": "fp16_static_compiled_attn_only_deltanet_packed",
+        "spec": {
+          "use_back8": false,
+          "use_static_cache": true,
+          "compile_decode": true,
+          "compile_after_prefill": true,
+          "compile_mlp": false,
+          "compile_self_attn": true,
+          "disable_linear_attn_for_compile": false,
+          "deltanet_mode": "triton_lowrank_beta_gate_packed",
+          "compile_mode": "reduce-overhead",
+          "compile_options": null,
+          "use_compact_full_attention_cache": false,
+          "use_fused_ffn": false,
+          "fused_ffn_layer_policy": null
+        },
+        "ffn_runtime": {
+          "mode": "fp16",
+          "replaced_layers": 0,
+          "min_decode_params": 20000000,
+          "layer_indices": null
+        },
+        "deltanet_runtime": {
+          "forward_impl": "qwen35_triton_decode_forward_lowrank_beta_gate_packed",
+          "causal_conv1d_update_impl": "causal_conv1d_update",
+          "chunk_impl": "chunk_gated_delta_rule",
+          "recurrent_impl": "qwen35_triton_recurrent_gated_delta_rule"
+        },
+        "static_cache_runtime": {
+          "enabled": true,
+          "patched_mask_creator": true
+        },
+        "compact_kv_cache_runtime": {
+          "enabled": false,
+          "mode": null
+        },
+        "model_tensor_memory": {
+          "available": true,
+          "parameter_bytes": 9078739968,
+          "buffer_bytes": 320,
+          "total_tensor_bytes": 9078740288,
+          "total_tensor_mib": 8658.161,
+          "fp16_parameter_bytes": 9078531072,
+          "int8_buffer_bytes": 0,
+          "int8_buffer_mib": 0.0
+        },
+        "compile_runtime": {
+          "enabled": true,
+          "mode": "reduce-overhead",
+          "fullgraph": false,
+          "compile_mlp": false,
+          "compile_self_attn": true,
+          "disable_linear_attn": false,
+          "compiled_mlp_layers": 0,
+          "compiled_self_attn_layers": 8,
+          "disabled_linear_attn_layers": 0,
+          "top_level_compile": false,
+          "top_level_compile_mode": null,
+          "top_level_fullgraph": null,
+          "compile_options": null
+        }
+      },
+      "measured_runs": 3,
+      "ttft_summary": {
+        "count": 3,
+        "min_ms": 59.419682,
+        "max_ms": 64.360254,
+        "mean_ms": 62.409333,
+        "p50_ms": 63.448064,
+        "p90_ms": 64.360254
+      },
+      "decode_summary": {
+        "count": 45,
+        "min_ms": 25.662833,
+        "max_ms": 40.328955,
+        "mean_ms": 29.268867,
+        "p50_ms": 28.426398,
+        "p90_ms": 32.705833
+      },
+      "end_to_end_summary": {
+        "count": 3,
+        "min_ms": 462.023708,
+        "max_ms": 538.636909,
+        "mean_ms": 501.442333,
+        "p50_ms": 503.666382,
+        "p90_ms": 538.636909
+      },
+      "generated_token_nll_summary": {
+        "count": 48,
+        "min": 1.9e-05,
+        "max": 1.18919,
+        "mean": 0.401234
+      },
+      "mean_generated_token_nll_summary": {
+        "count": 3,
+        "min": 0.401234,
+        "max": 0.401234,
+        "mean": 0.401234
+      },
+      "generated_token_ppl_proxy_summary": {
+        "count": 3,
+        "min": 1.493666,
+        "max": 1.493666,
+        "mean": 1.493666
+      },
+      "peak_cuda_memory_allocated_mib_summary": {
+        "count": 3,
+        "min": 8707.472,
+        "max": 8707.472,
+        "mean": 8707.472
+      },
+      "context_tokens": 25,
+      "compact_kv_cache_summary": {
+        "enabled": false
+      },
+      "per_step_mean_decode_ms": [
+        29.71542,
+        30.403525,
+        31.693705,
+        27.589632,
+        28.173062,
+        29.645362,
+        28.788119,
+        29.337999,
+        29.183881,
+        31.314375,
+        28.58741,
+        28.314456,
+        27.696661,
+        28.202204,
+        30.38719
+      ],
+      "generated_token_ids": [
+        19661,
+        6738,
+        16401,
+        37972,
+        18675,
+        310,
+        279,
+        854,
+        2483,
+        364,
+        279,
+        1785,
+        310,
+        1817,
+        321,
+        42377
+      ],
+      "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct",
+      "runs": [
+        {
+          "ttft_ms": 59.419682,
+          "decode_step_latencies_ms": [
+            31.063376,
+            26.531006,
+            26.746885,
+            25.662833,
+            25.885464,
+            27.499646,
+            26.033244,
+            26.17492,
+            26.419411,
+            26.699573,
+            26.361999,
+            25.900259,
+            25.888829,
+            27.552854,
+            28.183727
+          ],
+          "end_to_end_ms": 462.023708,
+          "generated_token_nll": [
+            0.0412,
+            0.003347,
+            0.00969,
+            1.9e-05,
+            0.121203,
+            0.000157,
+            3.7e-05,
+            0.502346,
+            1.166955,
+            0.241433,
+            0.768195,
+            1.012911,
+            0.016009,
+            0.455419,
+            1.18919,
+            0.891629
+          ],
+          "mean_generated_token_nll": 0.401234,
+          "generated_token_ppl_proxy": 1.493666,
+          "cuda_memory": {
+            "allocated_mib": 8705.578,
+            "reserved_mib": 8740.0,
+            "peak_allocated_mib": 8707.472,
+            "peak_reserved_mib": 8740.0
+          },
+          "compact_kv_cache": {
+            "enabled": false
+          },
+          "context_tokens": 25,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 64.360254,
+          "decode_step_latencies_ms": [
+            29.68851,
+            34.615664,
+            40.328955,
+            28.189974,
+            30.541155,
+            33.14418,
+            31.957029,
+            31.423201,
+            32.705833,
+            31.1084,
+            29.393201,
+            30.298422,
+            29.558422,
+            30.455256,
+            30.868453
+          ],
+          "end_to_end_ms": 538.636909,
+          "generated_token_nll": [
+            0.0412,
+            0.003347,
+            0.00969,
+            1.9e-05,
+            0.121203,
+            0.000157,
+            3.7e-05,
+            0.502346,
+            1.166955,
+            0.241433,
+            0.768195,
+            1.012911,
+            0.016009,
+            0.455419,
+            1.18919,
+            0.891629
+          ],
+          "mean_generated_token_nll": 0.401234,
+          "generated_token_ppl_proxy": 1.493666,
+          "cuda_memory": {
+            "allocated_mib": 8705.578,
+            "reserved_mib": 8740.0,
+            "peak_allocated_mib": 8707.472,
+            "peak_reserved_mib": 8740.0
+          },
+          "compact_kv_cache": {
+            "enabled": false
+          },
+          "context_tokens": 25,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        },
+        {
+          "ttft_ms": 63.448064,
+          "decode_step_latencies_ms": [
+            28.394373,
+            30.063904,
+            28.005274,
+            28.916088,
+            28.092568,
+            28.292261,
+            28.374085,
+            30.415877,
+            28.426398,
+            36.135151,
+            30.00703,
+            28.744687,
+            27.642732,
+            26.598501,
+            32.109389
+          ],
+          "end_to_end_ms": 503.666382,
+          "generated_token_nll": [
+            0.0412,
+            0.003347,
+            0.00969,
+            1.9e-05,
+            0.121203,
+            0.000157,
+            3.7e-05,
+            0.502346,
+            1.166955,
+            0.241433,
+            0.768195,
+            1.012911,
+            0.016009,
+            0.455419,
+            1.18919,
+            0.891629
+          ],
+          "mean_generated_token_nll": 0.401234,
+          "generated_token_ppl_proxy": 1.493666,
+          "cuda_memory": {
+            "allocated_mib": 8705.578,
+            "reserved_mib": 8740.0,
+            "peak_allocated_mib": 8707.472,
+            "peak_reserved_mib": 8740.0
+          },
+          "compact_kv_cache": {
+            "enabled": false
+          },
+          "context_tokens": 25,
+          "generated_token_ids": [
+            19661,
+            6738,
+            16401,
+            37972,
+            18675,
+            310,
+            279,
+            854,
+            2483,
+            364,
+            279,
+            1785,
+            310,
+            1817,
+            321,
+            42377
+          ],
+          "generated_text": "DeltaNet decode latency refers to the time required for the system to process and reconstruct"
+        }
+      ],
+      "patch_stats": {
+        "calls": 1080,
+        "batch_items": 1080,
+        "tokens": 1080
+      }
+    }
+  },
+  "pairwise_comparisons": {
+    "fp16_static_compiled_attn_only_deltanet": {
+      "fp16_static_compiled_attn_only_deltanet_packed": {
+        "ttft_speedup": 0.817078,
+        "decode_mean_speedup": 0.967921,
+        "end_to_end_speedup": 0.949147,
+        "same_generation": true,
+        "token_diff_count": 0,
+        "token_diff_rate": 0.0
+      }
+    }
+  }
+}

@@ -1,3 +1,9 @@
+"""Phase 2B round-robin DeltaNet benchmark.
+
+Makes FLA vs Triton comparisons fairer by rotating execution order over a
+shared loaded model.
+"""
+
 from __future__ import annotations
 
 import argparse
@@ -26,7 +32,7 @@ from triton_kernels.qwen35_single_user_benchmark import (
 
 ARTIFACT_DIR = Path("artifacts/qwen35_integration")
 ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
-DEFAULT_MODES = ("fla", "triton_base", "triton_fused")
+DEFAULT_MODES = ("fla", "triton_base", "triton_fused", "triton_lowrank_beta_gate_packed")
 
 
 def _is_triton_mode(mode: str) -> bool:

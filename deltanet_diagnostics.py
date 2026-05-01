@@ -1,3 +1,9 @@
+"""Phase 1/2 DeltaNet structure and forward-IO diagnostics.
+
+Supports early model inspection and cache-shape debugging before Triton kernel
+integration work began.
+"""
+
 from __future__ import annotations
 
 from collections.abc import Mapping

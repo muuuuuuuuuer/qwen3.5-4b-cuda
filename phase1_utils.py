@@ -1,3 +1,9 @@
+"""Shared utilities for model loading, layer enumeration, and baselines.
+
+These helpers produce the layer inventory and FP16 measurements that guide the
+DeltaNet decode-operator work.
+"""
+
 from __future__ import annotations
 
 import csv

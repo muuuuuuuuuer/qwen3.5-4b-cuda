@@ -1,3 +1,5 @@
+"""Regression tests for profiler summarization used in the reality checks."""
+
 import types
 import unittest
 
