@@ -1,0 +1,67 @@
+{
+  "gen_tokens": 8,
+  "warmup_runs": 0,
+  "bench_runs": 1,
+  "results": [
+    {
+      "label": "torch (baseline)",
+      "decode_mean_ms": 467.099,
+      "decode_list": [
+        467.099
+      ],
+      "e2e_mean_ms": 5104.504,
+      "e2e_list": [
+        5104.504
+      ],
+      "ttft_mean_ms": 1834.621
+    },
+    {
+      "label": "fp8 (FP8 FFN)",
+      "decode_mean_ms": 383.641,
+      "decode_list": [
+        383.641
+      ],
+      "e2e_mean_ms": 3421.038,
+      "e2e_list": [
+        3421.038
+      ],
+      "ttft_mean_ms": 735.421
+    },
+    {
+      "label": "torch_cuda0",
+      "decode_mean_ms": 1426.112,
+      "decode_list": [
+        1426.112
+      ],
+      "e2e_mean_ms": 14240.374,
+      "e2e_list": [
+        14240.374
+      ],
+      "ttft_mean_ms": 4257.25
+    },
+    {
+      "label": "packed (teammate DeltaNet)",
+      "decode_mean_ms": 1275.593,
+      "decode_list": [
+        1275.593
+      ],
+      "e2e_mean_ms": 13010.104,
+      "e2e_list": [
+        13010.104
+      ],
+      "ttft_mean_ms": 4080.652
+    },
+    {
+      "label": "combined (packed+FP8)",
+      "decode_mean_ms": 680.746,
+      "decode_list": [
+        680.746
+      ],
+      "e2e_mean_ms": 15636.999,
+      "e2e_list": [
+        15636.999
+      ],
+      "ttft_mean_ms": 10871.417
+    }
+  ]
+}

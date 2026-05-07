@@ -1,0 +1,100 @@
+{
+  "mode": "fp8_ffn",
+  "dataset": "gsm8k",
+  "num_prompts": 3,
+  "seed": 42,
+  "smoke": true,
+  "generation_config": {
+    "do_sample": false,
+    "max_new_tokens": 256,
+    "pad_token_id": 248046
+  },
+  "runtime_description": {
+    "mode": "fp8_ffn",
+    "spec": {
+      "deltanet_mode": "torch",
+      "use_static_cache": false,
+      "compile_decode": false,
+      "compile_after_prefill": false,
+      "compile_mode": "reduce-overhead",
+      "fp8_ffn": true,
+      "mode_note": "FP8 E4M3 weight-only quantized FFN layers, torch DeltaNet",
+      "fp8_patched_layers": 158
+    },
+    "deltanet_runtime": {
+      "forward_impl": "forward",
+      "causal_conv1d_update_impl": "torch_causal_conv1d_update",
+      "chunk_impl": "torch_chunk_gated_delta_rule",
+      "recurrent_impl": "torch_recurrent_gated_delta_rule"
+    },
+    "static_cache_runtime": {
+      "enabled": false,
+      "patched_mask_creator": false
+    },
+    "compile_runtime": {
+      "enabled": false,
+      "mode": null,
+      "fullgraph": null,
+      "compile_mlp": false,
+      "compile_self_attn": false,
+      "disable_linear_attn": false,
+      "compiled_mlp_layers": 0,
+      "compiled_self_attn_layers": 0,
+      "disabled_linear_attn_layers": 0
+    }
+  },
+  "per_question_results": [
+    {
+      "question_id": 1309,
+      "question": "The girls are trying to raise money for a carnival. Kim raises $320 more than Alexandra, who raises $430, and Maryam raises $400 more than Sarah, who raises $300. How much money, in dollars, did they all raise in total?",
+      "ground_truth": "2280",
+      "predicted": "11111",
+      "correct": false,
+      "raw_generation": " Alexandra's aidg11111emanemanazonazonazonazonazonzanzanzanzanzanzanzanzanzanottaigioliierTzanzanzanzanzanzanzanzanzanzanzanzanzanzanuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuskuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscuscค,emainemain",
+      "generated_tokens": 256,
+      "prefill_ms": 976.068604,
+      "total_ms": 96906.921875,
+      "decode_mean_ms_per_token": 376.199425,
+      "truncated": true
+    },
+    {
+      "question_id": 228,
+      "question": "Kalinda is working on a 360 piece puzzle with her mom. Kalinda can normally add 4 pieces per minute. Her mom can typically place half as many pieces per minute as Kalinda.  How many hours will it take them to complete this puzzle?",
+      "ground_truth": "1",
+      "predicted": "2",
+      "correct": false,
+      "raw_generation": " Kalika (the *ol\n * or *ot  \"9\n\n\\n（\\\n    *   \"1$\n       1|*\n    >\n|\n    (内   局\n    女\n*  1 1  00 00 00 00 1  1  当  对   00  1  000000000000000000000000000000000000000000 (b   =   regarding 444\n\n10000 < ( (annen etc. **\n| | | (s_\ns \n**\n\n|** [I朝 any\n\n  \n? t  5. (\n\n一  \n\n#\n一[[x.22,57 3, 1,，1,·，# $ $\n\nrf.\n\n 2\n\n. . .\n\n\n:\n（\n#\nhalt\n]Xx\nnochogogotototot (\n\\|:\n\"\n\ni",
+      "generated_tokens": 256,
+      "prefill_ms": 992.003052,
+      "total_ms": 96197.953125,
+      "decode_mean_ms_per_token": 373.356667,
+      "truncated": true
+    },
+    {
+      "question_id": 51,
+      "question": "Tom's ship can travel at 10 miles per hour.  He is sailing from 1 to 4 PM.  He then travels back at a rate of 6 mph.  How long does it take him to get back?",
+      "ground_truth": "5",
+      "predicted": "358999999999999999999999999999999999999999999999999999999999999999999999999999999999999999",
+      "correct": false,
+      "raw_generation": " From 1 to 1. This irscholi馹lesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesilesi ...,aineusandaagfaefflesiFlicitaineusandaagfa-00�,诚20-0-0-0-0-0ierf-00-000000000000000000000000020000000000000000000\n,、, / / / / / / / / / / / / \n, / / / / / / \n, / / / 358999999999999999999999999999999999999999999999999999999999999999999999999999999999999999",
+      "generated_tokens": 256,
+      "prefill_ms": 1093.700562,
+      "total_ms": 96762.015625,
+      "decode_mean_ms_per_token": 375.169863,
+      "truncated": true
+    }
+  ],
+  "summary": {
+    "accuracy": 0.0,
+    "invalid_count": 0,
+    "prefill_mean_ms": 1020.590739,
+    "prefill_median_ms": 992.003052,
+    "decode_mean_ms_per_token": 374.908652,
+    "decode_median_ms_per_token": 375.169863,
+    "total_mean_ms": 96622.296875,
+    "total_median_ms": 96762.015625,
+    "generated_tokens_mean": 256.0,
+    "generated_tokens_total": 768
+  },
+  "patch_stats": {}
+}

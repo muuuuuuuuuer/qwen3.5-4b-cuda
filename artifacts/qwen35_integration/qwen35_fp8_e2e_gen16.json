@@ -1,0 +1,58 @@
+{
+  "fp16_baseline": [
+    {
+      "ttft_ms": 642.621,
+      "decode_mean_ms": 445.701,
+      "decode_median_ms": 444.54,
+      "end_to_end_ms": 7328.407,
+      "generated_tokens": 16,
+      "output_text": " /",
+      "token_diff_from_baseline": null
+    },
+    {
+      "ttft_ms": 681.239,
+      "decode_mean_ms": 449.892,
+      "decode_median_ms": 444.163,
+      "end_to_end_ms": 7429.841,
+      "generated_tokens": 16,
+      "output_text": "d",
+      "token_diff_from_baseline": null
+    }
+  ],
+  "fp8_patched": [
+    {
+      "ttft_ms": 674.08,
+      "decode_mean_ms": 416.205,
+      "decode_median_ms": 405.228,
+      "end_to_end_ms": 6917.387,
+      "generated_tokens": 16,
+      "output_text": "zuk",
+      "token_diff_from_baseline": true
+    },
+    {
+      "ttft_ms": 764.449,
+      "decode_mean_ms": 407.809,
+      "decode_median_ms": 406.012,
+      "end_to_end_ms": 6881.725,
+      "generated_tokens": 16,
+      "output_text": "zuk",
+      "token_diff_from_baseline": true
+    }
+  ],
+  "comparison": {
+    "gen_tokens": 16,
+    "warmup_runs": 1,
+    "bench_runs": 2,
+    "fp16_decode_mean_ms": 447.797,
+    "fp8_decode_mean_ms": 412.007,
+    "decode_speedup": 1.0869,
+    "fp16_e2e_mean_ms": 7379.124,
+    "fp8_e2e_mean_ms": 6899.556,
+    "e2e_speedup": 1.0695,
+    "same_generation": false,
+    "kernel_calls": 2880,
+    "fp8_kernel_calls": 2700,
+    "fallback_calls": 180,
+    "patched_layers": 158
+  }
+}

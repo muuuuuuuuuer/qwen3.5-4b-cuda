@@ -26,6 +26,10 @@ from triton_kernels.qwen35_integration import (
     get_qwen35_triton_patch_stats,
     reset_qwen35_triton_patch_stats,
 )
+from triton_kernels.qwen35_fp8_integration import (
+    apply_qwen35_fp8_from_disk,
+    restore_original_fp8_layers,
+)
 from triton_kernels.qwen35_static_cache_integration import (
     build_qwen35_static_cache,
     configure_qwen35_static_cache_runtime,
@@ -38,6 +42,7 @@ QUESTION_IDS_PATH = ARTIFACT_DIR / "gsm8k_50_question_ids.json"
 EAGER_PACKED_MODE = "fp16_eager_packed"
 STATIC_COMPILED_MODE = "fp16_static_compiled_attn_only_deltanet"
 STATIC_COMPILED_PACKED_MODE = "fp16_static_compiled_attn_only_deltanet_packed"
+FP8_QUANT_DIR = Path("artifacts/fp8_quantized_weights")
 SEED = 42
 NUM_QUESTIONS = 50
 SMOKE_QUESTIONS = 3
@@ -55,6 +60,7 @@ EVAL_MODES = [
     EAGER_PACKED_MODE,
     STATIC_COMPILED_MODE,
     STATIC_COMPILED_PACKED_MODE,
+    "fp8_ffn",
 ]
 
 GSM8K_FEWSHOT = """Question: There are 15 trees in the grove. Grove workers will plant trees in the grove today. After they are done, there will be 21 trees. How many trees did the grove workers plant today?
@@ -189,6 +195,11 @@ def resolve_mode_spec(mode: str) -> dict[str, object]:
         spec.update({"use_static_cache": True, "compile_decode": True, "compile_after_prefill": True})
         spec["mode_note"] = "static-cache torch.compile report mode with packed DeltaNet"
         return spec
+    if mode == "fp8_ffn":
+        spec = _base_spec("torch")
+        spec["fp8_ffn"] = True
+        spec["mode_note"] = "FP8 E4M3 weight-only quantized FFN layers, torch DeltaNet"
+        return spec
     raise ValueError(f"Unsupported GSM8K eval mode: {mode}")
 
 
@@ -202,6 +213,10 @@ def _base_spec(deltanet_mode: str) -> dict[str, object]:
     }
 
 
+def _uses_triton_deltanet(deltanet_mode: str) -> bool:
+    return deltanet_mode not in ("torch", "fla")
+
+
 def configure_mode(model, mode: str) -> tuple[dict[str, object], dict[str, object]]:
     spec = resolve_mode_spec(mode)
     configure_qwen35_compile_runtime(model, enabled=False)
@@ -209,6 +224,12 @@ def configure_mode(model, mode: str) -> tuple[dict[str, object], dict[str, objec
     configure_qwen35_deltanet_runtime(model, str(spec["deltanet_mode"]))
     if bool(spec["use_static_cache"]):
         configure_qwen35_static_cache_runtime(model, enabled=True)
+    if spec.get("fp8_ffn"):
+        result = apply_qwen35_fp8_from_disk(
+            model, str(FP8_QUANT_DIR),
+            target_attention=False, use_autotune=True, free_fp16_weight=True,
+        )
+        spec["fp8_patched_layers"] = result["patched_count"]
     runtime_description = {
         "mode": mode,
         "spec": spec,
@@ -493,6 +514,7 @@ def run_mode(
         if model is not None:
             configure_qwen35_compile_runtime(model, enabled=False)
             configure_qwen35_static_cache_runtime(model, enabled=False)
+            restore_original_fp8_layers(model)
         del model
         del tokenizer
         gc.collect()
